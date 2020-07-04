@@ -14,8 +14,8 @@ import (
 	"github.com/libsv/libsv/script/address"
 	"github.com/libsv/libsv/transaction"
 	"github.com/libsv/libsv/transaction/output"
-	"github.com/rohenaz/bap-planaria-go/aip"
-	"github.com/rohenaz/bap-planaria-go/bob"
+	"github.com/rohenaz/go-aip"
+	"github.com/rohenaz/go-bob"
 )
 
 // BapPrefix is the bitcom prefix for Bitcoin Attestation Protocol
