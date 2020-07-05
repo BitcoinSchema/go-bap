@@ -18,8 +18,8 @@ import (
 	"github.com/rohenaz/go-bob"
 )
 
-// BapPrefix is the bitcom prefix for Bitcoin Attestation Protocol
-const BapPrefix = "1BAPSuaPnfGnSBM3GLV9yhxUdYe4vGbdMT"
+// Prefix is the bitcom prefix for Bitcoin Attestation Protocol
+const Prefix = "1BAPSuaPnfGnSBM3GLV9yhxUdYe4vGbdMT"
 
 // Bap Type Constants
 const (
@@ -147,7 +147,7 @@ func createIdentity(pk string, idKey string, currentCounter uint32) (tx *transac
 	t := transaction.New()
 
 	var data [][]byte
-	data = append(data, []byte(BapPrefix))
+	data = append(data, []byte(Prefix))
 	data = append(data, []byte("ID"))
 	data = append(data, []byte(idKey)) // is this right? might be doing something weird here
 	data = append(data, []byte(newAddress.AddressString))
@@ -191,7 +191,7 @@ func createAttestation(idKey string, tonicpowSigningKey *bsvec.PrivateKey, tonic
 	ta := transaction.New()
 
 	var attestData [][]byte
-	attestData = append(attestData, []byte(BapPrefix))
+	attestData = append(attestData, []byte(Prefix))
 	attestData = append(attestData, []byte("ATTEST"))
 	attestData = append(attestData, []byte(attestationHash[0:]))
 
