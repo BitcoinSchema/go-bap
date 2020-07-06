@@ -32,6 +32,7 @@ const (
 type Data struct {
 	Type     string `json:"type,omitempty" bson:"type,omitempty"`
 	URNHash  string `json:"urnHash,omitempty" bson:"urnHash,omitempty"`
+	IDKey string `json:"IDKey,omitempty" bson:"IDKey,omitempty"`
 	Address  string `json:"address,omitempty" bson:"address,omitempty"`
 	Sequence uint8  `json:"sequence" bson:"sequence"`
 }
@@ -44,15 +45,17 @@ func New() *Data {
 // FromTape takes a BOB Tape and returns a Bap data structure
 func (b *Data) FromTape(tape bob.Tape) {
 	b.Type = tape.Cell[1].S
-	b.URNHash = tape.Cell[2].S
+
 	switch b.Type {
 	case ATTEST:
 		fallthrough
 	case REVOKE:
+		b.URNHash = tape.Cell[2].S
 		seq, _ := strconv.ParseUint(tape.Cell[3].S, 10, 64)
 		b.Sequence = uint8(seq)
 	case ID:
 		b.Address = tape.Cell[3].S
+		b.IDKey = tape.Cell[2].S
 	}
 }
 
