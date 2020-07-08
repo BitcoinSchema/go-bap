@@ -35,6 +35,6 @@ func TestCreateAttestation(t *testing.T) {
 	}
 
 	if attestation.GetTxID() != "d21633ba23f70118185227be58a63527675641ad37967e2aa461559f577aec43" {
-		t.Error("Attestation", attestation.GetTxID())
+		t.Error("Failed to craete attestation. Unexpected TXID", attestation.GetTxID())
 	}
 }
