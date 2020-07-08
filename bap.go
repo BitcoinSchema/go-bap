@@ -32,7 +32,7 @@ const (
 type Data struct {
 	Type     string `json:"type,omitempty" bson:"type,omitempty"`
 	URNHash  string `json:"urnHash,omitempty" bson:"urnHash,omitempty"`
-	IDKey string `json:"IDKey,omitempty" bson:"IDKey,omitempty"`
+	IDKey    string `json:"IDKey,omitempty" bson:"IDKey,omitempty"`
 	Address  string `json:"address,omitempty" bson:"address,omitempty"`
 	Sequence uint8  `json:"sequence" bson:"sequence"`
 }
@@ -81,7 +81,7 @@ func example() {
 	fmt.Println(idKey)
 
 	var currentCounter uint32
-	tx, err := createIdentity(pk, idKey, currentCounter)
+	tx, err := CreateIdentity(pk, idKey, currentCounter)
 	if err != nil {
 		return
 	}
@@ -90,7 +90,7 @@ func example() {
 
 	// Create an attestation
 	tonicpowSigningKey, tonicpowSigningAddress, err := deriveKeys(tppk, currentCounter)
-	attestation, err := createAttestation(idKey, tonicpowSigningKey, tonicpowSigningAddress)
+	attestation, err := CreateAttestation(idKey, tonicpowSigningKey, tonicpowSigningAddress)
 	if err != nil {
 		return
 	}
@@ -133,7 +133,8 @@ func deriveKeys(hdpk string, currentCounter uint32) (*bsvec.PrivateKey, *address
 	return idPrivateKey, address, nil
 }
 
-func createIdentity(pk string, idKey string, currentCounter uint32) (tx *transaction.Transaction, err error) {
+// CreateIdentity creates an identity from a private key, an id key, and a counter
+func CreateIdentity(pk string, idKey string, currentCounter uint32) (tx *transaction.Transaction, err error) {
 	_, lastAddress, err := deriveKeys(pk, currentCounter)
 	if err != nil {
 		log.Println("err7", err)
@@ -179,7 +180,8 @@ func createIdentity(pk string, idKey string, currentCounter uint32) (tx *transac
 	return t, nil
 }
 
-func createAttestation(idKey string, tonicpowSigningKey *bsvec.PrivateKey, tonicpowSigningAddress *address.Address) (attestation *transaction.Transaction, err error) {
+// CreateAttestation creates an attestation transaction from an id key, signing key, and signing address
+func CreateAttestation(idKey string, tonicpowSigningKey *bsvec.PrivateKey, tonicpowSigningAddress *address.Address) (attestation *transaction.Transaction, err error) {
 
 	// Attest that an internal wallet address is associated with our identity key
 	attributeName := "internal-wallet-address"
