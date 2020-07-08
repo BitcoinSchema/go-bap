@@ -21,13 +21,17 @@ type Data struct {
 }
 ```
 
+## Env Vars
+
+`BAP_ENTITY_XPRIV` - Private key (xprv string) for entity making attestations
+
 ## Helper Methods
 
-`CreateIdentity`
+- CreateIdentity
 
-`CreateAttestation`
+- CreateAttestation
 
 ## ToDo
 
-- `CreateRevocation`
+- CreateRevocation
 - tests

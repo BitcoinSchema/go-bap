@@ -2,15 +2,12 @@ package bap
 
 import (
 	"bytes"
-	"crypto/rand"
 	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 	"log"
 	"strconv"
 
 	"github.com/bitcoinsv/bsvd/bsvec"
-	"github.com/bitcoinsv/bsvutil/hdkeychain"
 	"github.com/libsv/libsv/script/address"
 	"github.com/libsv/libsv/transaction"
 	"github.com/libsv/libsv/transaction/output"
@@ -57,80 +54,6 @@ func (b *Data) FromTape(tape bob.Tape) {
 		b.Address = tape.Cell[3].S
 		b.IDKey = tape.Cell[2].S
 	}
-}
-
-func randomHex(n int) (string, error) {
-	bytes := make([]byte, n)
-	if _, err := rand.Read(bytes); err != nil {
-		return "", err
-	}
-	return hex.EncodeToString(bytes), nil
-}
-
-func example() {
-
-	// TonicPow Identity Private Key
-	const tppk = "xprv9s21ZrQH143K4Mfe5DzuAGxtPGNAVJpQK5MCBrgGTZrd7g72mFihvQb51xtRm6PdNCLjpJdCQSDoYGmPWkHaQQ8AEPKhSYie5ADoFrDqTgn"
-
-	// Identity Private Key
-	const pk = "xprv9s21ZrQH143K2beTKhLXFRWWFwH8jkwUssjk3SVTiApgmge7kNC3jhVc4NgHW8PhW2y7BCDErqnKpKuyQMjqSePPJooPJowAz5BVLThsv6c"
-
-	// Create ID
-	// Generate a random ID key
-	idKey, _ := randomHex(64)
-	fmt.Println(idKey)
-
-	var currentCounter uint32
-	tx, err := CreateIdentity(pk, idKey, currentCounter)
-	if err != nil {
-		return
-	}
-
-	log.Println(tx.GetTxID())
-
-	// Create an attestation
-	tonicpowSigningKey, tonicpowSigningAddress, err := deriveKeys(tppk, currentCounter)
-	attestation, err := CreateAttestation(idKey, tonicpowSigningKey, tonicpowSigningAddress)
-	if err != nil {
-		return
-	}
-
-	log.Println("Attestation", attestation)
-}
-
-func deriveKeys(hdpk string, currentCounter uint32) (*bsvec.PrivateKey, *address.Address, error) {
-	hdPrivateKey, err := hdkeychain.NewKeyFromString(hdpk)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	// Root ID Key is m/0/0
-	var basePath uint32 // m/0
-
-	baseChild, err := hdPrivateKey.Child(basePath)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	lastExtendedIDKey, err := baseChild.Child(currentCounter) // m/0/N
-	if err != nil {
-		log.Panicln("err", err)
-		return nil, nil, err
-	}
-
-	idPrivateKey, err := lastExtendedIDKey.ECPrivKey()
-	if err != nil {
-		log.Panicln("err2", err)
-		return nil, nil, err
-	}
-
-	address, err := address.NewFromPublicKey(idPrivateKey.PubKey(), true)
-	if err != nil {
-		log.Panicln("err3", err)
-		return nil, nil, err
-	}
-
-	return idPrivateKey, address, nil
 }
 
 // CreateIdentity creates an identity from a private key, an id key, and a counter
