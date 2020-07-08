@@ -1,7 +1,6 @@
 package bap
 
 import (
-	"log"
 	"os"
 	"testing"
 )
@@ -35,5 +34,7 @@ func TestCreateAttestation(t *testing.T) {
 		t.Error("Failed to create attestation", err)
 	}
 
-	log.Println("Attestation", attestation)
+	if attestation.GetTxID() != "d21633ba23f70118185227be58a63527675641ad37967e2aa461559f577aec43" {
+		t.Error("Attestation", attestation.GetTxID())
+	}
 }
