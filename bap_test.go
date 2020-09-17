@@ -16,7 +16,7 @@ func TestCreateIdentity(t *testing.T) {
 		t.Error("Failed to create identity:", err)
 	}
 
-	if tx.GetTxID() != "e97ed4acb8d01a822dd5070e6addf762949f48a696311a954b85cd4a9c993a23" {
+	if tx.GetTxID() != "e6b6aad0cd2d1c0aa0a854e7acc0e9b164e722bf041fb24c48a3998da1e1e463" {
 		t.Error("Failed to create identity")
 	}
 }
@@ -33,6 +33,9 @@ func TestCreateAttestation(t *testing.T) {
 	attributeName := "internal-wallet-address"
 	attributeValue := "1Jipv1nANv5JKdZYEU7yNxKcs7WjB5NnTn"
 	identityAttributeSecret := "e2c6fb4063cc04af58935737eaffc938011dff546d47b7fbb18ed346f8c4d4fa"
+
+	// key := hex.EncodeToString(entitySigningKey.Serialize())
+	// log.Println("BAP ENTITY XPRIV", key)
 
 	attestation, err := CreateAttestation(idKey, entitySigningKey, entitySigningAddress, attributeName, attributeValue, identityAttributeSecret)
 	if err != nil {

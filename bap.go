@@ -3,6 +3,7 @@ package bap
 import (
 	"bytes"
 	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"log"
 	"strconv"
@@ -116,11 +117,11 @@ func (b *Data) FromTape(tape bob.Tape) {
 
 // CreateIdentity creates an identity from a private key, an id key, and a counter
 func CreateIdentity(pk string, idKey string, currentCounter uint32) (tx *transaction.Transaction, err error) {
-	_, lastAddress, err := deriveKeys(pk, currentCounter)
-	if err != nil {
-		log.Println("err7", err)
-		return
-	}
+	// lastSigningKey, lastAddress, err := deriveKeys(pk, currentCounter)
+	// if err != nil {
+	// 	log.Println("err7", err)
+	// 	return
+	// }
 
 	newSigningPrivateKey, newAddress, err := deriveKeys(pk, currentCounter+1)
 	if err != nil {
@@ -139,11 +140,18 @@ func CreateIdentity(pk string, idKey string, currentCounter uint32) (tx *transac
 	data = append(data, []byte("|"))
 
 	// Generate a signature from this point
-	aipSignature, err := bsvec.SignCompact(bsvec.S256(), newSigningPrivateKey, bytes.Join(data, []byte{}), false)
+	aipSig := aip.New()
+	// Get private key in string format
+	privKey := hex.EncodeToString(newSigningPrivateKey.Serialize())
+	// Sign with AIP
+	aipSig.Sign(privKey, string(bytes.Join(data, []byte{})))
+	if newAddress.AddressString != aipSig.Address {
+		return nil, fmt.Errorf("Addresses dont match %s vs %s", newAddress.AddressString, aipSig.Address)
+	}
 	data = append(data, []byte(aip.Prefix))
-	data = append(data, []byte("BITCOIN_ECDSA"))
-	data = append(data, []byte(lastAddress.AddressString))
-	data = append(data, []byte(aipSignature))
+	data = append(data, []byte(aipSig.Algorithm))
+	data = append(data, []byte(aipSig.Signature))
+	data = append(data, []byte(aipSig.Signature))
 
 	// Add the OP_RETURN output to the transaction
 	newOutput, err := output.NewOpReturnParts(data)
@@ -177,14 +185,21 @@ func CreateAttestation(idKey string, attestorSigningKey *bsvec.PrivateKey, attes
 	attestData = append(attestData, []byte(Prefix))
 	attestData = append(attestData, []byte("ATTEST"))
 	attestData = append(attestData, []byte(attestationHash[0:]))
+	attestData = append(attestData, []byte("|"))
 
-	// Generate a signature from this point
-	aipAttestSignature, err := bsvec.SignCompact(bsvec.S256(), attestorSigningKey, bytes.Join(attestData, []byte{}), false)
+	// Generate a signature
+	aipSig := aip.New()
+	aipSig.Sign(hex.EncodeToString(attestorSigningKey.Serialize()), string(bytes.Join(attestData, []byte{})))
+
+	if attestorSigningAddress.AddressString != aipSig.Address {
+		log.Printf("Failed addresses dont match! %s %s\n", attestorSigningAddress.AddressString, aipSig.Address)
+		return
+	}
 
 	attestData = append(attestData, []byte(aip.Prefix))
-	attestData = append(attestData, []byte("BITCOIN_ECDSA"))
+	attestData = append(attestData, []byte(aipSig.Algorithm))
 	attestData = append(attestData, []byte(attestorSigningAddress.AddressString))
-	attestData = append(attestData, []byte(aipAttestSignature))
+	attestData = append(attestData, []byte(aipSig.Signature))
 
 	return ta, nil
 }

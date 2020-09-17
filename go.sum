@@ -15,6 +15,10 @@ github.com/piotrnar/gocoin v0.0.0-20200912093848-56d57d5b6be5/go.mod h1:sW6i99oj
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/rohenaz/go-aip v0.0.0-20200917004617-3de729456db4 h1:N7ihYbYMbHS6il6WCp94tzBn51eXJcbBIGQ/lBMgtTg=
 github.com/rohenaz/go-aip v0.0.0-20200917004617-3de729456db4/go.mod h1:ZNKwGpwjfruBVA8gTKY5+Udqe/jHBIZqJZWZ5Tc4az0=
+github.com/rohenaz/go-aip v0.0.1 h1:L4k43m8dumiyeo8VJCjeYoLU/3sJkE6nai7paeInf74=
+github.com/rohenaz/go-aip v0.0.1/go.mod h1:OSaNxaq0q0CGvyYxU69soTH33ExBhKiIPQwGDcjL8nM=
+github.com/rohenaz/go-bitcoin v0.0.2 h1:Qi/Sjtd2BkcjsFqLvGd9edZ9zmYrQRD2OAB2gpH5osw=
+github.com/rohenaz/go-bitcoin v0.0.2/go.mod h1:SeAs3+ATQZB0J6ysNWyspNAiZXPfistYrks7dGtPz5I=
 github.com/rohenaz/go-bob v0.0.0-20200711220921-847f9f004275 h1:Q0OlBg3YM9JhIgXY+r2LZY67r1Hr7gfwnU6dLvS4mIM=
 github.com/rohenaz/go-bob v0.0.0-20200711220921-847f9f004275/go.mod h1:YEjUooBSmI0F5qcDnyms7/xe8TdYZNcQrdQhOJ16fvY=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
