@@ -25,6 +25,64 @@ const (
 	ATTEST = "ATTEST"
 )
 
+// {
+//   "tx": {
+//     "h": "26b754e6fdf04121b8d91160a0b252a22ae30204fc552605b7f6d3f08419f29e"
+//   },
+//   "in": [
+//     {
+//       "i": 0,
+//       "e": {
+//         "h": "744a55a8637aa191aa058630da51803abbeadc2de3d65b4acace1f5f10789c5b",
+//         "i": 1,
+//         "a": "1LC16EQVsqVYGeYTCrjvNf8j28zr4DwBuk"
+//       },
+//       "seq": 4294967295
+//     }
+//   ],
+//   "1BAPSuaPnfGnSBM3GLV9yhxUdYe4vGbdMT": [
+//     {
+//       "b": "MUJBUFN1YVBuZkduU0JNM0dMVjl5aHhVZFllNHZHYmRNVA==",
+//       "s": "1BAPSuaPnfGnSBM3GLV9yhxUdYe4vGbdMT",
+//       "ii": 2,
+//       "i": 0
+//     },
+//     {
+//       "b": "QVRURVNU",
+//       "s": "ATTEST",
+//       "ii": 3,
+//       "i": 1
+//     },
+//     {
+//       "b": "MTZjYTkwY2UzYzYzNDcxMzJhZGJhNDBhYTBkNWZhYTNiMmJmMjAxNTY3OGZmYzYzZGIxNTExYjY3Njg4NWUyNQ==",
+//       "s": "16ca90ce3c6347132adba40aa0d5faa3b2bf2015678ffc63db1511b676885e25",
+//       "ii": 4,
+//       "i": 2
+//     },
+//     {
+//       "b": "MA==",
+//       "s": "0",
+//       "ii": 5,
+//       "i": 3
+//     }
+//   ],
+//   "AIP": {
+//     "algorithm": "BITCOIN_ECDSA",
+//     "address": "134a6TXxzgQ9Az3w8BcvgdZyA5UqRL89da",
+//     "signature": "H8dWw/zHantrzxDSladRQe9du9OaYDdOp5brkthehKCjKVnOkx9A3HFXY0h956hWrMpZ/BlGg0O0VpNA0g2XYe0="
+//   },
+//   "out": [
+//     {
+//       "i": 1,
+//       "e": {
+//         "v": 14491552,
+//         "i": 1,
+//         "a": "1LC16EQVsqVYGeYTCrjvNf8j28zr4DwBuk"
+//       }
+//     }
+//   ],
+//   "lock": 0
+// }
 // Data is Bitcoin Attestation Protocol data
 type Data struct {
 	Type     string `json:"type,omitempty" bson:"type,omitempty"`
@@ -104,12 +162,9 @@ func CreateIdentity(pk string, idKey string, currentCounter uint32) (tx *transac
 }
 
 // CreateAttestation creates an attestation transaction from an id key, signing key, and signing address
-func CreateAttestation(idKey string, tonicpowSigningKey *bsvec.PrivateKey, tonicpowSigningAddress *address.Address) (attestation *transaction.Transaction, err error) {
+func CreateAttestation(idKey string, attestorSigningKey *bsvec.PrivateKey, attestorSigningAddress *address.Address, attributeName string, attributeValue string, identityAttributeSecret string) (attestation *transaction.Transaction, err error) {
 
 	// Attest that an internal wallet address is associated with our identity key
-	attributeName := "internal-wallet-address"
-	attributeValue := "1Jipv1nANv5JKdZYEU7yNxKcs7WjB5NnTn"
-	identityAttributeSecret := "e2c6fb4063cc04af58935737eaffc938011dff546d47b7fbb18ed346f8c4d4fa" // I forgot what this is for?
 	idUrn := fmt.Sprintf("urn:bap:id:%s:%s:%s", attributeName, attributeValue, identityAttributeSecret)
 	idUrnHash := sha256.Sum256([]byte(idUrn))
 	attestationUrn := fmt.Sprintf("urn:bap:attest:%s:%s", idUrnHash, idKey)
@@ -124,11 +179,11 @@ func CreateAttestation(idKey string, tonicpowSigningKey *bsvec.PrivateKey, tonic
 	attestData = append(attestData, []byte(attestationHash[0:]))
 
 	// Generate a signature from this point
-	aipAttestSignature, err := bsvec.SignCompact(bsvec.S256(), tonicpowSigningKey, bytes.Join(attestData, []byte{}), false)
+	aipAttestSignature, err := bsvec.SignCompact(bsvec.S256(), attestorSigningKey, bytes.Join(attestData, []byte{}), false)
 
 	attestData = append(attestData, []byte(aip.Prefix))
 	attestData = append(attestData, []byte("BITCOIN_ECDSA"))
-	attestData = append(attestData, []byte(tonicpowSigningAddress.AddressString))
+	attestData = append(attestData, []byte(attestorSigningAddress.AddressString))
 	attestData = append(attestData, []byte(aipAttestSignature))
 
 	return ta, nil

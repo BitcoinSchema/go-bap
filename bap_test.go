@@ -29,7 +29,12 @@ func TestCreateAttestation(t *testing.T) {
 	var currentCounter uint32
 	// Create an attestation
 	entitySigningKey, entitySigningAddress, err := deriveKeys(entityPk, currentCounter)
-	attestation, err := CreateAttestation(idKey, entitySigningKey, entitySigningAddress)
+
+	attributeName := "internal-wallet-address"
+	attributeValue := "1Jipv1nANv5JKdZYEU7yNxKcs7WjB5NnTn"
+	identityAttributeSecret := "e2c6fb4063cc04af58935737eaffc938011dff546d47b7fbb18ed346f8c4d4fa"
+
+	attestation, err := CreateAttestation(idKey, entitySigningKey, entitySigningAddress, attributeName, attributeValue, identityAttributeSecret)
 	if err != nil {
 		t.Error("Failed to create attestation", err)
 	}
