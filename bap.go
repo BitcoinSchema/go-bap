@@ -19,11 +19,14 @@ import (
 // Prefix is the bitcom prefix for Bitcoin Attestation Protocol
 const Prefix = "1BAPSuaPnfGnSBM3GLV9yhxUdYe4vGbdMT"
 
+// Types is an enum for Bap Type Constants
+type Types string
+
 // Bap Type Constants
 const (
-	ID     = "ID"
-	REVOKE = "REVOKE"
-	ATTEST = "ATTEST"
+	ID     Types = "ID"
+	REVOKE Types = "REVOKE"
+	ATTEST Types = "ATTEST"
 )
 
 // {
@@ -100,9 +103,10 @@ func New() *Data {
 
 // FromTape takes a BOB Tape and returns a Bap data structure
 func (b *Data) FromTape(tape bob.Tape) {
+
 	b.Type = tape.Cell[1].S
 
-	switch b.Type {
+	switch Types(b.Type) {
 	case ATTEST:
 		fallthrough
 	case REVOKE:
