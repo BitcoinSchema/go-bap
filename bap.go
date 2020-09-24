@@ -46,7 +46,7 @@ func New() *Data {
 // FromTape takes a BOB Tape and returns a Bap data structure
 func (b *Data) FromTape(tape bob.Tape) {
 
-	b.Type = tape.Cell[1].S
+	b.Type = Types(tape.Cell[1].S)
 
 	switch Types(b.Type) {
 	case ATTEST:
