@@ -29,67 +29,9 @@ const (
 	ATTEST Types = "ATTEST"
 )
 
-// {
-//   "tx": {
-//     "h": "26b754e6fdf04121b8d91160a0b252a22ae30204fc552605b7f6d3f08419f29e"
-//   },
-//   "in": [
-//     {
-//       "i": 0,
-//       "e": {
-//         "h": "744a55a8637aa191aa058630da51803abbeadc2de3d65b4acace1f5f10789c5b",
-//         "i": 1,
-//         "a": "1LC16EQVsqVYGeYTCrjvNf8j28zr4DwBuk"
-//       },
-//       "seq": 4294967295
-//     }
-//   ],
-//   "1BAPSuaPnfGnSBM3GLV9yhxUdYe4vGbdMT": [
-//     {
-//       "b": "MUJBUFN1YVBuZkduU0JNM0dMVjl5aHhVZFllNHZHYmRNVA==",
-//       "s": "1BAPSuaPnfGnSBM3GLV9yhxUdYe4vGbdMT",
-//       "ii": 2,
-//       "i": 0
-//     },
-//     {
-//       "b": "QVRURVNU",
-//       "s": "ATTEST",
-//       "ii": 3,
-//       "i": 1
-//     },
-//     {
-//       "b": "MTZjYTkwY2UzYzYzNDcxMzJhZGJhNDBhYTBkNWZhYTNiMmJmMjAxNTY3OGZmYzYzZGIxNTExYjY3Njg4NWUyNQ==",
-//       "s": "16ca90ce3c6347132adba40aa0d5faa3b2bf2015678ffc63db1511b676885e25",
-//       "ii": 4,
-//       "i": 2
-//     },
-//     {
-//       "b": "MA==",
-//       "s": "0",
-//       "ii": 5,
-//       "i": 3
-//     }
-//   ],
-//   "AIP": {
-//     "algorithm": "BITCOIN_ECDSA",
-//     "address": "134a6TXxzgQ9Az3w8BcvgdZyA5UqRL89da",
-//     "signature": "H8dWw/zHantrzxDSladRQe9du9OaYDdOp5brkthehKCjKVnOkx9A3HFXY0h956hWrMpZ/BlGg0O0VpNA0g2XYe0="
-//   },
-//   "out": [
-//     {
-//       "i": 1,
-//       "e": {
-//         "v": 14491552,
-//         "i": 1,
-//         "a": "1LC16EQVsqVYGeYTCrjvNf8j28zr4DwBuk"
-//       }
-//     }
-//   ],
-//   "lock": 0
-// }
 // Data is Bitcoin Attestation Protocol data
 type Data struct {
-	Type     string `json:"type,omitempty" bson:"type,omitempty"`
+	Type     Types  `json:"type,omitempty" bson:"type,omitempty"`
 	URNHash  string `json:"urnHash,omitempty" bson:"urnHash,omitempty"`
 	IDKey    string `json:"IDKey,omitempty" bson:"IDKey,omitempty"`
 	Address  string `json:"address,omitempty" bson:"address,omitempty"`
