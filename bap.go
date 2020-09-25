@@ -44,7 +44,7 @@ func New() *Data {
 }
 
 // FromTape takes a BOB Tape and returns a Bap data structure
-func (b *Data) FromTape(tape bob.Tape) {
+func (b *Data) FromTape(tape bob.Tape) error {
 
 	b.Type = Types(tape.Cell[1].S)
 
@@ -52,13 +52,20 @@ func (b *Data) FromTape(tape bob.Tape) {
 	case ATTEST:
 		fallthrough
 	case REVOKE:
+		if len(tape.Cell) < 4 {
+			return fmt.Errorf("Invalid attest or revoke record %+v", tape.Cell)
+		}
 		b.URNHash = tape.Cell[2].S
 		seq, _ := strconv.ParseUint(tape.Cell[3].S, 10, 64)
 		b.Sequence = uint8(seq)
 	case ID:
+		if len(tape.Cell) < 4 {
+			return fmt.Errorf("Invalid Identity record %+v", tape.Cell)
+		}
 		b.Address = tape.Cell[3].S
 		b.IDKey = tape.Cell[2].S
 	}
+	return nil
 }
 
 // CreateIdentity creates an identity from a private key, an id key, and a counter
