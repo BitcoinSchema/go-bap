@@ -28,13 +28,14 @@ func TestCreateAttestation(t *testing.T) {
 	// Entity / Service Provider's Identity Private Key
 	entityPk := "xprv9s21ZrQH143K3PZSwbEeXEYq74EbnfMngzAiMCZcfjzyRpUvt2vQJnaHRTZjeuEmLXeN6BzYRoFsEckfobxE9XaRzeLGfQoxzPzTRyRb6oE"
 
-	var currentCounter uint32
-
 	// Derive the keys
-	entitySigningKey, entitySigningAddress, err := deriveKeys(entityPk, currentCounter)
+	entitySigningKey, entitySigningAddress, err := deriveKeys(entityPk, 0)
 	if err != nil {
 		t.Fatalf("error occurred: %s", err.Error())
 	}
+
+	t.Log(entitySigningKey)
+	t.Log(entitySigningAddress)
 
 	attributeName := "internal-wallet-address"
 	attributeValue := "1Jipv1nANv5JKdZYEU7yNxKcs7WjB5NnTn"
