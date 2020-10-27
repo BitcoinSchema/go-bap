@@ -33,8 +33,13 @@ const (
 // CreateIdentity creates an identity from a private key, an id key, and a counter
 func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transaction.Transaction, error) {
 
+	// Test for id key
+	if len(idKey) == 0 {
+		return nil, fmt.Errorf("missing required field: %s", "idKey")
+	}
+
 	// Derive the keys
-	newSigningPrivateKey, newAddress, err := deriveKeys(privateKey, currentCounter+1) // todo: why plus 1?
+	newSigningPrivateKey, newAddress, err := deriveKeys(privateKey, currentCounter+1) // Increment the next key
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +49,7 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 		data,
 		[]byte(Prefix),
 		[]byte(ID),
-		[]byte(idKey), // is this right? might be doing something weird here
+		[]byte(idKey), // todo: is this right? might be doing something weird here
 		[]byte(newAddress),
 		[]byte(pipe),
 	)
@@ -63,7 +68,7 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 		data,
 		[]byte(aip.Prefix),
 		[]byte(aipSig.Algorithm),
-		[]byte(aipSig.Signature),
+		[]byte(aipSig.Address),
 		[]byte(aipSig.Signature),
 	)
 
@@ -74,6 +79,7 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 	}
 
 	// Create a transaction
+	// todo: replace with bitcoin.CreateTx()
 	t := transaction.New()
 
 	// Add the output
@@ -114,7 +120,7 @@ func CreateAttestation(idKey, attestorSigningKey,
 	data = append(data,
 		[]byte(aip.Prefix),
 		[]byte(aipSig.Algorithm),
-		[]byte(attestorSigningAddress),
+		[]byte(aipSig.Address),
 		[]byte(aipSig.Signature),
 	)
 
@@ -125,6 +131,7 @@ func CreateAttestation(idKey, attestorSigningKey,
 	}
 
 	// Create a transaction
+	// todo: replace with bitcoin.CreateTx()
 	t := transaction.New()
 
 	// Add the output
