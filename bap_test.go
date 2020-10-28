@@ -136,7 +136,6 @@ func TestCreateAttestation(t *testing.T) {
 	if attestation, err = CreateAttestation(
 		idKey,
 		entitySigningKey,
-		entitySigningAddress,
 		attributeName,
 		attributeValue,
 		identityAttributeSecret,
