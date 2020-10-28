@@ -3,13 +3,13 @@ package bap
 import "testing"
 
 // TestFromTape will test the method FromTape()
-func TestFromTape(t *testing.T) {
+func TestNewFromTape(t *testing.T) {
 
 	// todo: create tests, examples & benchmarks
 }
 
 // TestFromTapePanic tests for nil case in FromTape()
-func TestFromTapePanic(t *testing.T) {
+func TestNewFromTapePanic(t *testing.T) {
 	t.Parallel()
 
 	defer func() {
@@ -18,7 +18,7 @@ func TestFromTapePanic(t *testing.T) {
 		}
 	}()
 
-	_, err := FromTape(nil)
+	_, err := NewFromTape(nil)
 	if err == nil {
 		t.Fatalf("error expected")
 	}
