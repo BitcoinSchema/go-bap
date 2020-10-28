@@ -47,11 +47,11 @@ View the generated [documentation](https://pkg.go.dev/github.com/bitcoinschema/g
 <summary><strong><code>Package Dependencies</code></strong></summary>
 <br/>
 
+- [bitcoinschema/go-aip](https://github.com/bitcoinschema/go-aip)
 - [bitcoinschema/go-bitcoin](https://github.com/bitcoinschema/go-bitcoin)
 - [bitcoinsv/bsvd](https://github.com/bitcoinsv/bsvd)
 - [bitcoinsv/bsvutil](https://github.com/bitcoinsv/bsvutil)
 - [libsv/libsv](https://github.com/libsv/libsv)
-- [rohenaz/go-aip](https://github.com/rohenaz/go-aip)
 - [rohenaz/go-bob](https://github.com/rohenaz/go-bob)
 </details>
 
