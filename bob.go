@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/rohenaz/go-bob"
+	"github.com/bitcoinschema/go-bob"
 )
 
 // Data is BAP data object from the bob.Tape

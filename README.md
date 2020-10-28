@@ -49,9 +49,9 @@ View the generated [documentation](https://pkg.go.dev/github.com/bitcoinschema/g
 
 - [bitcoinschema/go-aip](https://github.com/bitcoinschema/go-aip)
 - [bitcoinschema/go-bitcoin](https://github.com/bitcoinschema/go-bitcoin)
+- [bitcoinschema/go-bob](https://github.com/bitcoinschema/go-bob)
 - [bitcoinsv/bsvutil](https://github.com/bitcoinsv/bsvutil)
 - [libsv/libsv](https://github.com/libsv/libsv)
-- [rohenaz/go-bob](https://github.com/rohenaz/go-bob)
 </details>
 
 <details>
