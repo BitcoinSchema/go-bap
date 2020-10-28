@@ -7,7 +7,6 @@
 package bap
 
 import (
-	"bytes"
 	"crypto/sha256"
 	"fmt"
 
@@ -62,8 +61,7 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 
 	// Generate a signature from this point
 	var finalOutput *output.Output
-	finalOutput, err = createAIPSignature(newSigningPrivateKey, newAddress, data)
-	if err != nil {
+	if finalOutput, _, err = aip.SignOpReturnData(newSigningPrivateKey, aip.BitcoinECDSA, data); err != nil {
 		return nil, err
 	}
 
@@ -72,8 +70,7 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 }
 
 // CreateAttestation creates an attestation transaction from an id key, signing key, and signing address
-func CreateAttestation(idKey, attestorSigningKey,
-	attestorSigningAddress, attributeName,
+func CreateAttestation(idKey, attestorSigningKey, attributeName,
 	attributeValue, identityAttributeSecret string) (*transaction.Transaction, error) {
 
 	// Attest that an internal wallet address is associated with our identity key
@@ -92,40 +89,13 @@ func CreateAttestation(idKey, attestorSigningKey,
 	)
 
 	// Generate a signature from this point
-	finalOutput, err := createAIPSignature(attestorSigningKey, attestorSigningAddress, data)
+	finalOutput, _, err := aip.SignOpReturnData(attestorSigningKey, aip.BitcoinECDSA, data)
 	if err != nil {
 		return nil, err
 	}
 
 	// Return the transaction
 	return returnTx(finalOutput), nil
-}
-
-// createAIPSignature will create an AIP signature and return a valid output
-func createAIPSignature(privateKey, address string, data [][]byte) (*output.Output, error) {
-
-	// Generate a signature from this point
-	// Sign with AIP
-	aipSig, err := aip.Sign(privateKey, aip.BitcoinECDSA, string(bytes.Join(data, []byte{})))
-	if err != nil {
-		return nil, err
-	}
-
-	if address != aipSig.AlgorithmSigningComponent {
-		return nil, fmt.Errorf("failed signing, addresses don't match %s vs %s", address, aipSig.AlgorithmSigningComponent)
-	}
-
-	// Add AIP signature
-	data = append(
-		data,
-		[]byte(aip.Prefix),
-		[]byte(aipSig.Algorithm),
-		[]byte(aipSig.AlgorithmSigningComponent),
-		[]byte(aipSig.Signature),
-	)
-
-	// Create the OP_RETURN
-	return output.NewOpReturnParts(data)
 }
 
 // returnTx will add the output and return a tx

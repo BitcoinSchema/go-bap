@@ -17,7 +17,6 @@ func main() {
 	tx, err := bap.CreateAttestation(
 		exampleIdKey,
 		"127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c",
-		"1AFc9feffQmxT61iEftzkaYvWTgLCyU6j",
 		exampleAttributeName,
 		exampleAttributeValue,
 		exampleIdentityAttributeSecret,
