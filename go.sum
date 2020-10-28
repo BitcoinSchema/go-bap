@@ -3,6 +3,8 @@ github.com/bitcoinschema/go-aip v0.0.9 h1:pioYgwfU5rS9DkuFOh/j2Bd3n6kMtDSx3O48e0
 github.com/bitcoinschema/go-aip v0.0.9/go.mod h1:vQNmJVBKilwCNT2w4wGjRPueuXMRchAoIfIPSJPoNPM=
 github.com/bitcoinschema/go-aip v0.0.10 h1:qGU+og9qCviCYk6TEs0oBC0OJYiOjMm75tCYyovAdjs=
 github.com/bitcoinschema/go-aip v0.0.10/go.mod h1:vQNmJVBKilwCNT2w4wGjRPueuXMRchAoIfIPSJPoNPM=
+github.com/bitcoinschema/go-aip v0.0.11 h1:7dNmKt5ytE3eyhmD4/t55QxWiK7dVk6BM+kOMYVkiiY=
+github.com/bitcoinschema/go-aip v0.0.11/go.mod h1:uY2tR6e3XDwc7vuBcG1QLHisF50FyW0hOVpjvCetw5I=
 github.com/bitcoinschema/go-bitcoin v0.2.1/go.mod h1:DbEPU/krXiht+Jh5QbpHTJnj/vilMBFAaCGbV5a6IQk=
 github.com/bitcoinschema/go-bitcoin v0.2.5/go.mod h1:DbEPU/krXiht+Jh5QbpHTJnj/vilMBFAaCGbV5a6IQk=
 github.com/bitcoinschema/go-bitcoin v0.2.7 h1:qgrjapt/d6Yukl3q1hGgov47iM5T24erTiHl8M/HQQA=

@@ -106,13 +106,13 @@ func createAIPSignature(privateKey, address string, data [][]byte) (*output.Outp
 
 	// Generate a signature from this point
 	// Sign with AIP
-	aipSig, err := aip.Sign(privateKey, aip.BitcoinECDSA, string(bytes.Join(data, []byte{})), "")
+	aipSig, err := aip.Sign(privateKey, aip.BitcoinECDSA, string(bytes.Join(data, []byte{})))
 	if err != nil {
 		return nil, err
 	}
 
-	if address != aipSig.Address {
-		return nil, fmt.Errorf("failed signing, addresses don't match %s vs %s", address, aipSig.Address)
+	if address != aipSig.AlgorithmSigningComponent {
+		return nil, fmt.Errorf("failed signing, addresses don't match %s vs %s", address, aipSig.AlgorithmSigningComponent)
 	}
 
 	// Add AIP signature
@@ -120,7 +120,7 @@ func createAIPSignature(privateKey, address string, data [][]byte) (*output.Outp
 		data,
 		[]byte(aip.Prefix),
 		[]byte(aipSig.Algorithm),
-		[]byte(aipSig.Address),
+		[]byte(aipSig.AlgorithmSigningComponent),
 		[]byte(aipSig.Signature),
 	)
 
