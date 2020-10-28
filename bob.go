@@ -17,28 +17,28 @@ type Data struct {
 }
 
 // FromTape takes a bob.Tape and returns a BAP data structure
-func (a *Data) FromTape(tape *bob.Tape) error {
-	a.Type = AttestationType(tape.Cell[1].S)
+func (d *Data) FromTape(tape *bob.Tape) error {
+	d.Type = AttestationType(tape.Cell[1].S)
 
-	switch a.Type {
+	switch d.Type {
 	case ATTEST:
 		fallthrough
 	case REVOKE:
 		if len(tape.Cell) < 4 {
 			return fmt.Errorf("invalid %s or %s record %+v", ATTEST, REVOKE, tape.Cell)
 		}
-		a.URNHash = tape.Cell[2].S
+		d.URNHash = tape.Cell[2].S
 		seq, err := strconv.ParseUint(tape.Cell[3].S, 10, 64)
 		if err != nil {
 			return err
 		}
-		a.Sequence = seq
+		d.Sequence = seq
 	case ID:
 		if len(tape.Cell) < 4 {
 			return fmt.Errorf("invalid %s record %+v", ID, tape.Cell)
 		}
-		a.Address = tape.Cell[3].S
-		a.IDKey = tape.Cell[2].S
+		d.Address = tape.Cell[3].S
+		d.IDKey = tape.Cell[2].S
 	}
 	return nil
 }
