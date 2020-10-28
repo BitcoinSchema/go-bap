@@ -47,8 +47,5 @@ func (a *Data) FromTape(tape *bob.Tape) error {
 func NewFromTape(tape *bob.Tape) (a *Data, err error) {
 	a = new(Data)
 	err = a.FromTape(tape)
-	if err != nil {
-		return nil, err
-	}
-	return a, nil
+	return
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/libsv/libsv/transaction"
 )
 
-// Identity Private Key
+// Examples
 const privateKey = "xprv9s21ZrQH143K2beTKhLXFRWWFwH8jkwUssjk3SVTiApgmge7kNC3jhVc4NgHW8PhW2y7BCDErqnKpKuyQMjqSePPJooPJowAz5BVLThsv6c"
 const idKey = "8bafa4ca97d770276253585cb2a49da1775ec7aeed3178e346c8c1b55eaf5ca2"
 
@@ -154,7 +154,8 @@ func TestCreateAttestation(t *testing.T) {
 	}
 }
 
-// todo: mature the tests, examples & benchmarks
+// todo: tests for CreateAttestation
+// todo: examples / benchmarks for CreateAttestation
 
 // TestNew will test the method New()
 func TestNew(t *testing.T) {
