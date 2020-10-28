@@ -1,11 +1,7 @@
 package bap
 
 import (
-	"encoding/hex"
-
 	"github.com/bitcoinschema/go-bitcoin"
-	"github.com/bitcoinsv/bsvd/bsvec"
-	"github.com/bitcoinsv/bsvutil"
 	"github.com/bitcoinsv/bsvutil/hdkeychain"
 )
 
@@ -25,18 +21,12 @@ func deriveKeys(xPrivateKey string, currentCounter uint32) (xPriv string, addres
 	}
 
 	// Get the address
-	var addr *bsvutil.LegacyAddressPubKeyHash
-	if addr, err = bitcoin.GetAddressFromHDKey(idKey); err != nil {
+	if address, err = bitcoin.GetAddressStringFromHDKey(idKey); err != nil {
 		return
 	}
-	address = addr.String()
 
 	// Get the private key from the identity key
-	var idPrivateKey *bsvec.PrivateKey
-	if idPrivateKey, err = bitcoin.GetPrivateKeyFromHDKey(idKey); err != nil {
-		return
-	}
-	xPriv = hex.EncodeToString(idPrivateKey.Serialize())
+	xPriv, err = bitcoin.GetPrivateKeyStringFromHDKey(idKey)
 
 	return
 }

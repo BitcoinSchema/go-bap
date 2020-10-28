@@ -39,9 +39,9 @@ View the generated [documentation](https://pkg.go.dev/github.com/bitcoinschema/g
 [![GoDoc](https://godoc.org/github.com/bitcoinschema/go-bap?status.svg&style=flat)](https://pkg.go.dev/github.com/bitcoinschema/go-bap)
 
 ### Features
-- [Create Attestation](bap.go)
 - [Create Identity](bap.go)
-- [Parse from Bob Tape](bob.go)
+- [Create Attestation](bap.go)
+- [Parse from BOB Tape](bob.go)
 
 <details>
 <summary><strong><code>Package Dependencies</code></strong></summary>
@@ -49,7 +49,6 @@ View the generated [documentation](https://pkg.go.dev/github.com/bitcoinschema/g
 
 - [bitcoinschema/go-aip](https://github.com/bitcoinschema/go-aip)
 - [bitcoinschema/go-bitcoin](https://github.com/bitcoinschema/go-bitcoin)
-- [bitcoinsv/bsvd](https://github.com/bitcoinsv/bsvd)
 - [bitcoinsv/bsvutil](https://github.com/bitcoinsv/bsvutil)
 - [libsv/libsv](https://github.com/libsv/libsv)
 - [rohenaz/go-bob](https://github.com/rohenaz/go-bob)
