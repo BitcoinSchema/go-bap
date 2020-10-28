@@ -154,4 +154,20 @@ func TestCreateAttestation(t *testing.T) {
 	}
 }
 
+// TestNew will test the method New()
+func TestNew(t *testing.T) {
+	data := New()
+	if data == nil {
+		t.Fatalf("new should not return nil")
+	} else if data.Type != "" {
+		t.Fatalf("type should not be set")
+	} else if data.URNHash != "" {
+		t.Fatalf("URNHash should not be set")
+	} else if data.Address != "" {
+		t.Fatalf("Address should not be set")
+	} else if data.Sequence != 0 {
+		t.Fatalf("Sequence should not be set")
+	}
+}
+
 // todo: mature the tests, examples & benchmarks

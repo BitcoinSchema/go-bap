@@ -30,6 +30,11 @@ const (
 	REVOKE AttestationType = "REVOKE"
 )
 
+// New creates a new BAP structure
+func New() *Data {
+	return &Data{}
+}
+
 // CreateIdentity creates an identity from a private key, an id key, and a counter
 func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transaction.Transaction, error) {
 
