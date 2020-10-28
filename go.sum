@@ -1,6 +1,8 @@
 github.com/aead/siphash v1.0.1/go.mod h1:Nywa3cDsYNNK3gaciGTWPwHt0wlpNV15vwmswBAUSII=
 github.com/bitcoinschema/go-aip v0.0.9 h1:pioYgwfU5rS9DkuFOh/j2Bd3n6kMtDSx3O48e0wz/hs=
 github.com/bitcoinschema/go-aip v0.0.9/go.mod h1:vQNmJVBKilwCNT2w4wGjRPueuXMRchAoIfIPSJPoNPM=
+github.com/bitcoinschema/go-aip v0.0.10 h1:qGU+og9qCviCYk6TEs0oBC0OJYiOjMm75tCYyovAdjs=
+github.com/bitcoinschema/go-aip v0.0.10/go.mod h1:vQNmJVBKilwCNT2w4wGjRPueuXMRchAoIfIPSJPoNPM=
 github.com/bitcoinschema/go-bitcoin v0.2.1/go.mod h1:DbEPU/krXiht+Jh5QbpHTJnj/vilMBFAaCGbV5a6IQk=
 github.com/bitcoinschema/go-bitcoin v0.2.5/go.mod h1:DbEPU/krXiht+Jh5QbpHTJnj/vilMBFAaCGbV5a6IQk=
 github.com/bitcoinschema/go-bitcoin v0.2.7 h1:qgrjapt/d6Yukl3q1hGgov47iM5T24erTiHl8M/HQQA=
@@ -107,6 +109,8 @@ golang.org/x/sys v0.0.0-20200930185726-fdedc70b468f/go.mod h1:h1NjWce9XRLGQEsW7w
 golang.org/x/sys v0.0.0-20201020230747-6e5568b54d1a/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20201028094953-708e7fb298ac h1:bplbaOojU0hnrC9nvWJ5Nvp/gPIWKFMiGBFI9Cpp16I=
 golang.org/x/sys v0.0.0-20201028094953-708e7fb298ac/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+golang.org/x/sys v0.0.0-20201028215240-c5abc1b1d397 h1:YZ169h3kkKEXsueizzMwOT9AaiffbOa6oXSmUFJ4vxM=
+golang.org/x/sys v0.0.0-20201028215240-c5abc1b1d397/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/text v0.3.3/go.mod h1:5Zoc/QRtKVWzQhOtBMvqHzDpF6irO9z98xDceosuGiQ=
 golang.org/x/text v0.3.4 h1:0YWbFKbhXG/wIiuHDSKpS0Iy7FSA+u45VtBMfQcFTTc=

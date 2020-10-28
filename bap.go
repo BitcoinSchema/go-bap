@@ -105,10 +105,12 @@ func CreateAttestation(idKey, attestorSigningKey,
 func createAIPSignature(privateKey, address string, data [][]byte) (*output.Output, error) {
 
 	// Generate a signature from this point
-	aipSig := aip.New()
-
 	// Sign with AIP
-	aipSig.Sign(privateKey, string(bytes.Join(data, []byte{})), aip.BitcoinECDSA, "")
+	aipSig, err := aip.Sign(privateKey, aip.BitcoinECDSA, string(bytes.Join(data, []byte{})), "")
+	if err != nil {
+		return nil, err
+	}
+
 	if address != aipSig.Address {
 		return nil, fmt.Errorf("failed signing, addresses don't match %s vs %s", address, aipSig.Address)
 	}
