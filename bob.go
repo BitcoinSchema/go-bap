@@ -18,7 +18,6 @@ type Data struct {
 
 // FromTape takes a bob.Tape and returns a BAP data structure
 func (a *Data) FromTape(tape *bob.Tape) error {
-
 	a.Type = AttestationType(tape.Cell[1].S)
 
 	switch a.Type {
