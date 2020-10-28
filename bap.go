@@ -11,9 +11,9 @@ import (
 	"crypto/sha256"
 	"fmt"
 
+	"github.com/bitcoinschema/go-aip"
 	"github.com/libsv/libsv/transaction"
 	"github.com/libsv/libsv/transaction/output"
-	"github.com/rohenaz/go-aip"
 )
 
 // Prefix is the bitcom prefix for Bitcoin Attestation Protocol (BAP)

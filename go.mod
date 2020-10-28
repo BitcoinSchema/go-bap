@@ -1,12 +1,12 @@
 module github.com/bitcoinschema/go-bap
 
-go 1.14
+go 1.15
 
 require (
+	github.com/bitcoinschema/go-aip v0.0.7
 	github.com/bitcoinschema/go-bitcoin v0.2.5
 	github.com/bitcoinsv/bsvd v0.0.0-20190609155523-4c29707f7173
 	github.com/bitcoinsv/bsvutil v0.0.0-20181216182056-1d77cf353ea9
 	github.com/libsv/libsv v0.0.11
-	github.com/rohenaz/go-aip v0.0.6
 	github.com/rohenaz/go-bob v0.0.1
 )
