@@ -154,6 +154,8 @@ func TestCreateAttestation(t *testing.T) {
 	}
 }
 
+// todo: mature the tests, examples & benchmarks
+
 // TestNew will test the method New()
 func TestNew(t *testing.T) {
 	data := New()
@@ -170,4 +172,18 @@ func TestNew(t *testing.T) {
 	}
 }
 
-// todo: mature the tests, examples & benchmarks
+// ExampleNew example using New()
+func ExampleNew() {
+	data := New()
+	data.Type = ATTEST
+
+	fmt.Printf("BAP type: %s", data.Type)
+	// Output:BAP type: ATTEST
+}
+
+// BenchmarkNew benchmarks the method New()
+func BenchmarkNew(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = New()
+	}
+}
