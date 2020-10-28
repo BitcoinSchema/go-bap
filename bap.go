@@ -44,6 +44,7 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 		return nil, err
 	}
 
+	// Create the identity attestation op_return data
 	var data [][]byte
 	data = append(
 		data,
@@ -55,38 +56,14 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 	)
 
 	// Generate a signature from this point
-	aipSig := aip.New()
-
-	// Sign with AIP
-	aipSig.Sign(newSigningPrivateKey, string(bytes.Join(data, []byte{})), aip.BITCOIN_ECDSA, "")
-	if newAddress != aipSig.Address {
-		return nil, fmt.Errorf("failed signing, addresses don't match %s vs %s", newAddress, aipSig.Address)
-	}
-
-	// Add AIP signature
-	data = append(
-		data,
-		[]byte(aip.Prefix),
-		[]byte(aipSig.Algorithm),
-		[]byte(aipSig.Address),
-		[]byte(aipSig.Signature),
-	)
-
-	// Create the OP_RETURN
-	var newOutput *output.Output
-	if newOutput, err = output.NewOpReturnParts(data); err != nil {
+	var finalOutput *output.Output
+	finalOutput, err = createAIPSignature(newSigningPrivateKey, newAddress, data)
+	if err != nil {
 		return nil, err
 	}
 
-	// Create a transaction
-	// todo: replace with bitcoin.CreateTx()
-	t := transaction.New()
-
-	// Add the output
-	t.Outputs = append(t.Outputs, newOutput)
-
 	// Return the transaction
-	return t, nil
+	return returnTx(finalOutput), nil
 }
 
 // CreateAttestation creates an attestation transaction from an id key, signing key, and signing address
@@ -109,34 +86,49 @@ func CreateAttestation(idKey, attestorSigningKey,
 		[]byte(pipe),
 	)
 
-	// Generate a signature
-	aipSig := aip.New()
-	aipSig.Sign(attestorSigningKey, string(bytes.Join(data, []byte{})), aip.BITCOIN_ECDSA, "")
-	if attestorSigningAddress != aipSig.Address {
-		return nil, fmt.Errorf("failed signing, addresses don't match: %s vs %s", attestorSigningAddress, aipSig.Address)
+	// Generate a signature from this point
+	finalOutput, err := createAIPSignature(attestorSigningKey, attestorSigningAddress, data)
+	if err != nil {
+		return nil, err
 	}
 
-	// Add signature
-	data = append(data,
+	// Return the transaction
+	return returnTx(finalOutput), nil
+}
+
+// createAIPSignature will create an AIP signature and return a valid output
+func createAIPSignature(privateKey, address string, data [][]byte) (*output.Output, error) {
+
+	// Generate a signature from this point
+	aipSig := aip.New()
+
+	// Sign with AIP
+	aipSig.Sign(privateKey, string(bytes.Join(data, []byte{})), aip.BITCOIN_ECDSA, "")
+	if address != aipSig.Address {
+		return nil, fmt.Errorf("failed signing, addresses don't match %s vs %s", address, aipSig.Address)
+	}
+
+	// Add AIP signature
+	data = append(
+		data,
 		[]byte(aip.Prefix),
 		[]byte(aipSig.Algorithm),
 		[]byte(aipSig.Address),
 		[]byte(aipSig.Signature),
 	)
 
-	// Add op_return to the transaction
-	out, err := output.NewOpReturnParts(data)
-	if err != nil {
-		return nil, err
-	}
+	// Create the OP_RETURN
+	return output.NewOpReturnParts(data)
+}
+
+// returnTx will add the output and return a tx
+func returnTx(out *output.Output) (t *transaction.Transaction) {
 
 	// Create a transaction
 	// todo: replace with bitcoin.CreateTx()
-	t := transaction.New()
+	t = transaction.New()
 
 	// Add the output
 	t.AddOutput(out)
-
-	// Return the transaction
-	return t, nil
+	return
 }
