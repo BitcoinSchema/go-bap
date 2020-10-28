@@ -58,7 +58,7 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 	aipSig := aip.New()
 
 	// Sign with AIP
-	aipSig.Sign(newSigningPrivateKey, string(bytes.Join(data, []byte{})))
+	aipSig.Sign(newSigningPrivateKey, string(bytes.Join(data, []byte{})), aip.BITCOIN_ECDSA, "")
 	if newAddress != aipSig.Address {
 		return nil, fmt.Errorf("failed signing, addresses don't match %s vs %s", newAddress, aipSig.Address)
 	}
@@ -111,7 +111,7 @@ func CreateAttestation(idKey, attestorSigningKey,
 
 	// Generate a signature
 	aipSig := aip.New()
-	aipSig.Sign(attestorSigningKey, string(bytes.Join(data, []byte{})))
+	aipSig.Sign(attestorSigningKey, string(bytes.Join(data, []byte{})), aip.BITCOIN_ECDSA, "")
 	if attestorSigningAddress != aipSig.Address {
 		return nil, fmt.Errorf("failed signing, addresses don't match: %s vs %s", attestorSigningAddress, aipSig.Address)
 	}
