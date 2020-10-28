@@ -108,7 +108,7 @@ func createAIPSignature(privateKey, address string, data [][]byte) (*output.Outp
 	aipSig := aip.New()
 
 	// Sign with AIP
-	aipSig.Sign(privateKey, string(bytes.Join(data, []byte{})), aip.BITCOIN_ECDSA, "")
+	aipSig.Sign(privateKey, string(bytes.Join(data, []byte{})), aip.BitcoinECDSA, "")
 	if address != aipSig.Address {
 		return nil, fmt.Errorf("failed signing, addresses don't match %s vs %s", address, aipSig.Address)
 	}
