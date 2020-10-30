@@ -54,7 +54,7 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 		data,
 		[]byte(Prefix),
 		[]byte(ID),
-		[]byte(idKey), // todo: is this right? might be doing something weird here
+		[]byte(idKey),
 		[]byte(newAddress),
 		[]byte(pipe),
 	)
