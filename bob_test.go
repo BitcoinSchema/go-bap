@@ -38,6 +38,13 @@ func TestNewFromTape(t *testing.T) {
 		t.Fatalf("error occurred: %s", err.Error())
 	}
 
+	// Bad Sequence
+	bobData.Out[0].Tape[1].Cell[3].S = ""
+	_, err = NewFromTape(&bobData.Out[0].Tape[1])
+	if err == nil {
+		t.Fatalf("error should have occurred")
+	}
+
 	// ID tape
 	bobData.Out[0].Tape[1].Cell[1].S = string(ID)
 	bobData.Out[0].Tape[1].Cell[2].S = "idKey"
