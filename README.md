@@ -41,7 +41,7 @@ View the generated [documentation](https://pkg.go.dev/github.com/bitcoinschema/g
 ### Features
 - [Create Identity](bap.go)
 - [Create Attestation](bap.go)
-- [Parse from BOB Tape](bob.go)
+- [Parse from BOB Tape(s)](bob.go)
 
 <details>
 <summary><strong><code>Package Dependencies</code></strong></summary>
@@ -153,6 +153,10 @@ All kinds of contributions are welcome :raised_hands:!
 The most basic way to show your support is to star :star2: the project, or to raise issues :speech_balloon:.
 You can also support this project by [becoming a sponsor on GitHub](https://github.com/sponsors/BitcoinSchema) :clap:
 or by making a [**bitcoin donation**](https://gobitcoinsv.com/#sponsor) to ensure this journey continues indefinitely! :rocket:
+
+
+### Credits
+[Siggi](https://github.com/icellan) for creating [BAP](https://github.com/icellan/bap) :clap:
 
 <br/>
 

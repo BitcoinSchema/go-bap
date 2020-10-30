@@ -1,5 +1,7 @@
 // Package bap is a library for working with Bitcoin Attestation Protocol (BAP) in Go
 //
+// Protocol: https://github.com/icellan/bap
+//
 // If you have any suggestions or comments, please feel free to open an issue on
 // this GitHub repository!
 //
@@ -31,6 +33,8 @@ const (
 )
 
 // CreateIdentity creates an identity from a private key, an id key, and a counter
+//
+// Source: https://github.com/icellan/bap
 func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transaction.Transaction, error) {
 
 	// Test for id key
@@ -66,6 +70,8 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 }
 
 // CreateAttestation creates an attestation transaction from an id key, signing key, and signing address
+//
+// Source: https://github.com/icellan/bap
 func CreateAttestation(idKey, attestorSigningKey, attributeName,
 	attributeValue, identityAttributeSecret string) (*transaction.Transaction, error) {
 
