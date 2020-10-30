@@ -3,8 +3,6 @@ package bap
 import (
 	"fmt"
 	"testing"
-
-	"github.com/libsv/libsv/transaction"
 )
 
 // Examples
@@ -112,49 +110,153 @@ func BenchmarkCreateIdentity(b *testing.B) {
 	}
 }
 
-// TestCreateAttestation will test the method CreateAttestation()
-func TestCreateAttestation(t *testing.T) {
-	t.Parallel()
+// TestDeriveKeys will test the method deriveKeys()
+func TestDeriveKeys(t *testing.T) {
+
+	// Derive the keys
+	_, _, err := deriveKeys("", 0)
+	if err == nil {
+		t.Fatalf("error should have occurred")
+	}
 
 	// Entity / Service Provider's Identity Private Key
 	entityPk := "xprv9s21ZrQH143K3PZSwbEeXEYq74EbnfMngzAiMCZcfjzyRpUvt2vQJnaHRTZjeuEmLXeN6BzYRoFsEckfobxE9XaRzeLGfQoxzPzTRyRb6oE"
 
 	// Derive the keys
-	entitySigningKey, entitySigningAddress, err := deriveKeys(entityPk, 0)
+	var entitySigningAddress, entitySigningKey string
+	entitySigningKey, entitySigningAddress, err = deriveKeys(entityPk, 0)
 	if err != nil {
 		t.Fatalf("error occurred: %s", err.Error())
 	}
-
-	t.Log(entitySigningKey)
-	t.Log(entitySigningAddress)
-
-	attributeName := "internal-wallet-address"
-	attributeValue := "1Jipv1nANv5JKdZYEU7yNxKcs7WjB5NnTn"
-	identityAttributeSecret := "e2c6fb4063cc04af58935737eaffc938011dff546d47b7fbb18ed346f8c4d4fa"
-
-	var attestation *transaction.Transaction
-	if attestation, err = CreateAttestation(
-		idKey,
-		entitySigningKey,
-		attributeName,
-		attributeValue,
-		identityAttributeSecret,
-	); err != nil {
-		t.Fatalf("failed to create attestation: %s", err.Error())
+	if entitySigningKey != "127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c" {
+		t.Fatalf("signing key does not match: %s vs %s", entitySigningKey, "")
 	}
-
-	// Log out the tx
-	t.Log(attestation.ToString())
-	t.Log(attestation.GetTxID())
-
-	// Check the tx id
-	if attestation.GetTxID() != "f1126889e3873150d4ca93753b0f67ae338db4f725cc05390cd285bfac25ef8e" {
-		t.Fatalf("failed to create attestation - unexpected tx_id: %s", attestation.GetTxID())
+	if entitySigningAddress != "1AFc9feffQmxT61iEftzkaYvWTgLCyU6j" {
+		t.Fatalf("signing address does not match: %s vs %s", entitySigningAddress, "")
 	}
 }
 
-// todo: tests for CreateAttestation
-// todo: examples / benchmarks for CreateAttestation
+// TestCreateAttestation will test the method CreateAttestation()
+func TestCreateAttestation(t *testing.T) {
+	t.Parallel()
+
+	var (
+		// Testing private methods
+		tests = []struct {
+			inputIDKey           string
+			inputSigningKey      string
+			inputAttributeName   string
+			inputAttributeValue  string
+			inputAttributeSecret string
+			expectedTxID         string
+			expectedNil          bool
+			expectedError        bool
+		}{
+			{
+				idKey,
+				"127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c",
+				"person",
+				"john",
+				"some-secret-hash",
+				"dbf8105dab52332bd7921f5d09cffb107c40947bf283d960ce84a15ccc894197",
+				false,
+				false,
+			},
+			{
+				"",
+				"127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c",
+				"person",
+				"john",
+				"some-secret-hash",
+				"1930299d3c1f05155aa9f2c1c6cac6f18c5e6e213bbffb728665ba3bfa7e528d",
+				true,
+				true,
+			},
+			{
+				idKey,
+				"127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c",
+				"",
+				"john",
+				"some-secret-hash",
+				"1930299d3c1f05155aa9f2c1c6cac6f18c5e6e213bbffb728665ba3bfa7e528d",
+				true,
+				true,
+			},
+			{
+				idKey,
+				"127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c",
+				"person",
+				"john",
+				"",
+				"1930299d3c1f05155aa9f2c1c6cac6f18c5e6e213bbffb728665ba3bfa7e528d",
+				true,
+				true,
+			},
+			{
+				idKey,
+				"",
+				"person",
+				"john",
+				"some-secret-hash",
+				"1930299d3c1f05155aa9f2c1c6cac6f18c5e6e213bbffb728665ba3bfa7e528d",
+				true,
+				true,
+			},
+		}
+	)
+
+	// Run tests
+	for _, test := range tests {
+		if tx, err := CreateAttestation(test.inputIDKey, test.inputSigningKey,
+			test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret); err != nil && !test.expectedError {
+			t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and error not expected but got: %s", t.Name(), test.inputIDKey, test.inputSigningKey,
+				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret, err.Error())
+		} else if err == nil && test.expectedError {
+			t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and error was expected", t.Name(), test.inputIDKey, test.inputSigningKey,
+				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret)
+		} else if tx == nil && !test.expectedNil {
+			t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and nil was not expected", t.Name(), test.inputIDKey, test.inputSigningKey,
+				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret)
+		} else if tx != nil && test.expectedNil {
+			t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and nil was expected", t.Name(), test.inputIDKey, test.inputSigningKey,
+				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret)
+		} else if tx != nil && tx.GetTxID() != test.expectedTxID {
+			t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and expected [%s] but got [%s]", t.Name(), test.inputIDKey, test.inputSigningKey,
+				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret, test.expectedTxID, tx.GetTxID())
+		}
+	}
+}
+
+// ExampleCreateAttestation example using CreateAttestation()
+func ExampleCreateAttestation() {
+	tx, err := CreateAttestation(
+		idKey,
+		"127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c",
+		"person",
+		"john doe",
+		"some-secret-hash",
+	)
+	if err != nil {
+		fmt.Printf("failed to create attestation: %s", err.Error())
+		return
+	}
+
+	fmt.Printf("tx generated: %s", tx.GetTxID())
+	// Output:tx generated: 655c3931dbf9c5f52a95b150957db7c3a1d7ee2ba13732ca01ed03cc884170ae
+}
+
+// BenchmarkCreateAttestation benchmarks the method CreateAttestation()
+func BenchmarkCreateAttestation(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, _ = CreateAttestation(
+			idKey,
+			"127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c",
+			"person",
+			"john doe",
+			"some-secret-hash",
+		)
+	}
+}
 
 // TestNew will test the method New()
 func TestNew(t *testing.T) {

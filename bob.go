@@ -17,35 +17,31 @@ type Data struct {
 }
 
 // FromTape takes a bob.Tape and returns a BAP data structure
-func (d *Data) FromTape(tape *bob.Tape) error {
+func (d *Data) FromTape(tape *bob.Tape) (err error) {
 	d.Type = AttestationType(tape.Cell[1].S)
 
+	// Invalid length
+	if len(tape.Cell) < 4 {
+		err = fmt.Errorf("invalid %s record %+v", d.Type, tape.Cell)
+		return
+	}
+
 	switch d.Type {
-	case ATTEST:
-		fallthrough
-	case REVOKE:
-		if len(tape.Cell) < 4 {
-			return fmt.Errorf("invalid %s or %s record %+v", ATTEST, REVOKE, tape.Cell)
-		}
+	case REVOKE, ATTEST:
 		d.URNHash = tape.Cell[2].S
-		seq, err := strconv.ParseUint(tape.Cell[3].S, 10, 64)
-		if err != nil {
+		if d.Sequence, err = strconv.ParseUint(tape.Cell[3].S, 10, 64); err != nil {
 			return err
 		}
-		d.Sequence = seq
 	case ID:
-		if len(tape.Cell) < 4 {
-			return fmt.Errorf("invalid %s record %+v", ID, tape.Cell)
-		}
 		d.Address = tape.Cell[3].S
 		d.IDKey = tape.Cell[2].S
 	}
-	return nil
+	return
 }
 
 // NewFromTape takes a bob.Tape and returns a BAP data structure
-func NewFromTape(tape *bob.Tape) (a *Data, err error) {
-	a = new(Data)
-	err = a.FromTape(tape)
+func NewFromTape(tape *bob.Tape) (bapData *Data, err error) {
+	bapData = new(Data)
+	err = bapData.FromTape(tape)
 	return
 }
