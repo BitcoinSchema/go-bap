@@ -257,35 +257,3 @@ func BenchmarkCreateAttestation(b *testing.B) {
 		)
 	}
 }
-
-// TestNew will test the method New()
-func TestNew(t *testing.T) {
-	data := New()
-	if data == nil {
-		t.Fatalf("new should not return nil")
-	} else if data.Type != "" {
-		t.Fatalf("type should not be set")
-	} else if data.URNHash != "" {
-		t.Fatalf("URNHash should not be set")
-	} else if data.Address != "" {
-		t.Fatalf("Address should not be set")
-	} else if data.Sequence != 0 {
-		t.Fatalf("Sequence should not be set")
-	}
-}
-
-// ExampleNew example using New()
-func ExampleNew() {
-	data := New()
-	data.Type = ATTEST
-
-	fmt.Printf("BAP type: %s", data.Type)
-	// Output:BAP type: ATTEST
-}
-
-// BenchmarkNew benchmarks the method New()
-func BenchmarkNew(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_ = New()
-	}
-}

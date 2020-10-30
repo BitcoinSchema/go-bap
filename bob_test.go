@@ -17,16 +17,16 @@ func TestNewFromTape(t *testing.T) {
 	}
 
 	// Get from tape
-	var bapData *Data
-	bapData, err = NewFromTape(&bobData.Out[0].Tape[1])
+	var b *Bap
+	b, err = NewFromTape(&bobData.Out[0].Tape[1])
 	if err != nil {
 		t.Fatalf("error occurred: %s", err.Error())
-	} else if bapData.Type != ATTEST {
-		t.Fatalf("expected: %s got: %s", ATTEST, bapData.Type)
+	} else if b.Type != ATTEST {
+		t.Fatalf("expected: %s got: %s", ATTEST, b.Type)
 	}
 
 	// Wrong tape
-	bapData, err = NewFromTape(&bobData.Out[0].Tape[0])
+	_, err = NewFromTape(&bobData.Out[0].Tape[0])
 	if err == nil {
 		t.Fatalf("error should have occurred")
 	}
@@ -59,13 +59,13 @@ func ExampleNewFromTape() {
 	}
 
 	// Get from tape
-	var bapData *Data
-	bapData, err = NewFromTape(&bobData.Out[0].Tape[1])
+	var b *Bap
+	b, err = NewFromTape(&bobData.Out[0].Tape[1])
 	if err != nil {
 		fmt.Printf("error occurred: %s", err.Error())
 		return
 	}
-	fmt.Printf("BAP type: %s", bapData.Type)
+	fmt.Printf("BAP type: %s", b.Type)
 	// Output:BAP type: ATTEST
 }
 
