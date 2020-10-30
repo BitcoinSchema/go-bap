@@ -106,14 +106,9 @@ func CreateAttestation(idKey, attestorSigningKey, attributeName,
 	return returnTx(finalOutput), nil
 }
 
-// returnTx will add the output and return a tx
+// returnTx will add the output and return a new tx
 func returnTx(out *output.Output) (t *transaction.Transaction) {
-
-	// Create a transaction
-	// todo: replace with bitcoin.CreateTx()
 	t = transaction.New()
-
-	// Add the output
 	t.AddOutput(out)
 	return
 }

@@ -92,3 +92,96 @@ func TestNewFromTapePanic(t *testing.T) {
 		t.Fatalf("error expected")
 	}
 }
+
+// TestNewFromTapes will test the method NewFromTapes()
+func TestNewFromTapes(t *testing.T) {
+	t.Parallel()
+
+	// Parse from string into BOB
+	bobValidData, err := bob.NewFromString(sampleValidBobTx)
+	if err != nil {
+		t.Fatalf("error occurred: %s", err.Error())
+	}
+	var bobInvalidData *bob.Tx
+	if bobInvalidData, err = bob.NewFromString(sampleInvalidBobTx); err != nil {
+		t.Fatalf("error occurred: %s", err.Error())
+	}
+
+	var (
+		// Testing private methods
+		tests = []struct {
+			inputTapes       []bob.Tape
+			expectedType     AttestationType
+			expectedSequence uint64
+			expectedURNHash  string
+			expectedNil      bool
+			expectedError    bool
+		}{
+			{
+				bobValidData.Out[0].Tape,
+				"ATTEST",
+				0,
+				"cf39fc55da24dc23eff1809e6e6cf32a0fe6aecc81296543e9ac84b8c501bac5",
+				false,
+				false,
+			},
+			{
+				bobInvalidData.Out[0].Tape,
+				"",
+				0,
+				"",
+				true,
+				true,
+			},
+		}
+	)
+
+	// Run tests
+	var b *Bap
+	for _, test := range tests {
+		if b, err = NewFromTapes(test.inputTapes); err != nil && !test.expectedError {
+			t.Errorf("%s Failed: [%v] inputted and error not expected but got: %s", t.Name(), test.inputTapes, err.Error())
+		} else if err == nil && test.expectedError {
+			t.Errorf("%s Failed: [%v] inputted and error was expected", t.Name(), test.inputTapes)
+		} else if b == nil && !test.expectedNil {
+			t.Errorf("%s Failed: [%v] inputted and nil was not expected (bap)", t.Name(), test.inputTapes)
+		} else if b != nil && test.expectedNil {
+			t.Errorf("%s Failed: [%v] inputted and nil was expected (bap)", t.Name(), test.inputTapes)
+		} else if b != nil && b.Type != test.expectedType {
+			t.Errorf("%s Failed: [%v] inputted and expected [%s] but got [%s]", t.Name(), test.inputTapes, test.expectedType, b.Type)
+		} else if b != nil && b.Sequence != test.expectedSequence {
+			t.Errorf("%s Failed: [%v] inputted and expected [%d] but got [%d]", t.Name(), test.inputTapes, test.expectedSequence, b.Sequence)
+		} else if b != nil && b.URNHash != test.expectedURNHash {
+			t.Errorf("%s Failed: [%v] inputted and expected [%s] but got [%s]", t.Name(), test.inputTapes, test.expectedURNHash, b.URNHash)
+		}
+	}
+}
+
+// ExampleNewFromTapes example using NewFromTapes()
+func ExampleNewFromTapes() {
+
+	// Get BOB data from string
+	bobData, err := bob.NewFromString(sampleValidBobTx)
+	if err != nil {
+		fmt.Printf("error occurred: %s", err.Error())
+		return
+	}
+
+	// Get from tapes
+	var b *Bap
+	b, err = NewFromTapes(bobData.Out[0].Tape)
+	if err != nil {
+		fmt.Printf("error occurred: %s", err.Error())
+		return
+	}
+	fmt.Printf("BAP type: %s", b.Type)
+	// Output:BAP type: ATTEST
+}
+
+// BenchmarkNewFromTapes benchmarks the method NewFromTapes()
+func BenchmarkNewFromTapes(b *testing.B) {
+	bobData, _ := bob.NewFromString(sampleValidBobTx)
+	for i := 0; i < b.N; i++ {
+		_, _ = NewFromTapes(bobData.Out[0].Tape)
+	}
+}

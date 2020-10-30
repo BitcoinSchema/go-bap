@@ -1,6 +1,7 @@
 package bap
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 
@@ -37,6 +38,19 @@ func (b *Bap) FromTape(tape *bob.Tape) (err error) {
 		b.IDKey = tape.Cell[2].S
 	}
 	return
+}
+
+// NewFromTapes will create a new BAP object from a []bob.Tape
+func NewFromTapes(tapes []bob.Tape) (*Bap, error) {
+	// Loop tapes -> cells (only supporting 1 BAP record right now)
+	for index, t := range tapes {
+		for _, cell := range t.Cell {
+			if cell.S == Prefix {
+				return NewFromTape(&tapes[index])
+			}
+		}
+	}
+	return nil, errors.New("no BAP record found")
 }
 
 // NewFromTape takes a bob.Tape and returns a BAP data structure
