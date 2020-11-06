@@ -28,7 +28,7 @@ func TestCreateIdentity(t *testing.T) {
 				privateKey,
 				idKey,
 				0,
-				"49957864306b123c3cca8711635ba88890bb334eb3e9f21553b118eb4d66cc62",
+				"d2384b0946b8c3137bc0bf12d122efb8b77be998118b65c21448864234188f20",
 				false,
 				false,
 			},
@@ -60,7 +60,7 @@ func TestCreateIdentity(t *testing.T) {
 				privateKey,
 				idKey,
 				1,
-				"d820499a7fb3561d91d71d4eb8de636ae3bb1b7eca97497d7b6fbc3b164ea5b1",
+				"4f00a4c6bca4a538ecce849b19188222aeb0d28e7b0c9acdb0c20fe9de628f9e",
 				false,
 				false,
 			},
@@ -68,7 +68,7 @@ func TestCreateIdentity(t *testing.T) {
 				privateKey,
 				idKey,
 				100,
-				"e0c569310c5066dbda4ccdf25c2c7591f2dcb246528d2763ca5167b0f37d71b4",
+				"0b61af0cfd6331731b7f897b051a56a903928c6bcff8ba59cdd4b8d0093b12ae",
 				false,
 				false,
 			},
@@ -100,7 +100,7 @@ func ExampleCreateIdentity() {
 	}
 
 	fmt.Printf("tx generated: %s", tx.GetTxID())
-	// Output:tx generated: 49957864306b123c3cca8711635ba88890bb334eb3e9f21553b118eb4d66cc62
+	// Output:tx generated: d2384b0946b8c3137bc0bf12d122efb8b77be998118b65c21448864234188f20
 }
 
 // BenchmarkCreateIdentity benchmarks the method CreateIdentity()
@@ -158,7 +158,7 @@ func TestCreateAttestation(t *testing.T) {
 				"person",
 				"john",
 				"some-secret-hash",
-				"dbf8105dab52332bd7921f5d09cffb107c40947bf283d960ce84a15ccc894197",
+				"d2e8a8a1f4b1476d6ca67277b323ad35c2e1c9af4a8d0753c8a121a3a7b7e762",
 				false,
 				false,
 			},
@@ -242,7 +242,7 @@ func ExampleCreateAttestation() {
 	}
 
 	fmt.Printf("tx generated: %s", tx.GetTxID())
-	// Output:tx generated: 655c3931dbf9c5f52a95b150957db7c3a1d7ee2ba13732ca01ed03cc884170ae
+	// Output:tx generated: 3cd2baf76b7fc8324a117119daf77c0f428e5defb686be9b7631daaa036d5a61
 }
 
 // BenchmarkCreateAttestation benchmarks the method CreateAttestation()
