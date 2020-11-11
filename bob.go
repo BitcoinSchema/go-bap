@@ -1,14 +1,15 @@
 package bap
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 
 	"github.com/bitcoinschema/go-bob"
 )
 
-// Data is BAP data object from the bob.Tape
-type Data struct {
+// Bap is BAP data object from the bob.Tape
+type Bap struct {
 	Address  string          `json:"address,omitempty" bson:"address,omitempty"`
 	IDKey    string          `json:"id_key,omitempty" bson:"id_key,omitempty"`
 	Sequence uint64          `json:"sequence" bson:"sequence"`
@@ -17,35 +18,44 @@ type Data struct {
 }
 
 // FromTape takes a bob.Tape and returns a BAP data structure
-func (d *Data) FromTape(tape *bob.Tape) error {
-	d.Type = AttestationType(tape.Cell[1].S)
+func (b *Bap) FromTape(tape *bob.Tape) (err error) {
+	b.Type = AttestationType(tape.Cell[1].S)
 
-	switch d.Type {
-	case ATTEST:
-		fallthrough
-	case REVOKE:
-		if len(tape.Cell) < 4 {
-			return fmt.Errorf("invalid %s or %s record %+v", ATTEST, REVOKE, tape.Cell)
-		}
-		d.URNHash = tape.Cell[2].S
-		seq, err := strconv.ParseUint(tape.Cell[3].S, 10, 64)
-		if err != nil {
+	// Invalid length
+	if len(tape.Cell) < 4 {
+		err = fmt.Errorf("invalid %s record %+v", b.Type, tape.Cell)
+		return
+	}
+
+	switch b.Type {
+	case REVOKE, ATTEST:
+		b.URNHash = tape.Cell[2].S
+		if b.Sequence, err = strconv.ParseUint(tape.Cell[3].S, 10, 64); err != nil {
 			return err
 		}
-		d.Sequence = seq
 	case ID:
-		if len(tape.Cell) < 4 {
-			return fmt.Errorf("invalid %s record %+v", ID, tape.Cell)
-		}
-		d.Address = tape.Cell[3].S
-		d.IDKey = tape.Cell[2].S
+		b.Address = tape.Cell[3].S
+		b.IDKey = tape.Cell[2].S
 	}
-	return nil
+	return
+}
+
+// NewFromTapes will create a new BAP object from a []bob.Tape
+func NewFromTapes(tapes []bob.Tape) (*Bap, error) {
+	// Loop tapes -> cells (only supporting 1 BAP record right now)
+	for index, t := range tapes {
+		for _, cell := range t.Cell {
+			if cell.S == Prefix {
+				return NewFromTape(&tapes[index])
+			}
+		}
+	}
+	return nil, errors.New("no BAP record found")
 }
 
 // NewFromTape takes a bob.Tape and returns a BAP data structure
-func NewFromTape(tape *bob.Tape) (a *Data, err error) {
-	a = new(Data)
-	err = a.FromTape(tape)
+func NewFromTape(tape *bob.Tape) (b *Bap, err error) {
+	b = new(Bap)
+	err = b.FromTape(tape)
 	return
 }

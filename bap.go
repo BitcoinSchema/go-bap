@@ -1,5 +1,7 @@
 // Package bap is a library for working with Bitcoin Attestation Protocol (BAP) in Go
 //
+// Protocol: https://github.com/icellan/bap
+//
 // If you have any suggestions or comments, please feel free to open an issue on
 // this GitHub repository!
 //
@@ -8,6 +10,7 @@ package bap
 
 import (
 	"crypto/sha256"
+	"errors"
 	"fmt"
 
 	"github.com/bitcoinschema/go-aip"
@@ -29,12 +32,9 @@ const (
 	REVOKE AttestationType = "REVOKE"
 )
 
-// New creates a new BAP structure
-func New() *Data {
-	return &Data{}
-}
-
 // CreateIdentity creates an identity from a private key, an id key, and a counter
+//
+// Source: https://github.com/icellan/bap
 func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transaction.Transaction, error) {
 
 	// Test for id key
@@ -54,14 +54,14 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 		data,
 		[]byte(Prefix),
 		[]byte(ID),
-		[]byte(idKey), // todo: is this right? might be doing something weird here
+		[]byte(idKey),
 		[]byte(newAddress),
 		[]byte(pipe),
 	)
 
 	// Generate a signature from this point
 	var finalOutput *output.Output
-	if finalOutput, _, err = aip.SignOpReturnData(newSigningPrivateKey, aip.BitcoinECDSA, data); err != nil {
+	if finalOutput, _, _, err = aip.SignOpReturnData(newSigningPrivateKey, aip.BitcoinECDSA, data); err != nil {
 		return nil, err
 	}
 
@@ -70,8 +70,22 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 }
 
 // CreateAttestation creates an attestation transaction from an id key, signing key, and signing address
+//
+// Source: https://github.com/icellan/bap
 func CreateAttestation(idKey, attestorSigningKey, attributeName,
 	attributeValue, identityAttributeSecret string) (*transaction.Transaction, error) {
+
+	// ID key is required
+	if len(idKey) == 0 {
+		return nil, errors.New("missing required field: idKey")
+	}
+
+	// Attribute secret and name
+	if len(attributeName) == 0 {
+		return nil, errors.New("missing required field: attributeName")
+	} else if len(identityAttributeSecret) == 0 {
+		return nil, errors.New("missing required field: identityAttributeSecret")
+	}
 
 	// Attest that an internal wallet address is associated with our identity key
 	idUrn := fmt.Sprintf("urn:bap:id:%s:%s:%s", attributeName, attributeValue, identityAttributeSecret)
@@ -89,7 +103,7 @@ func CreateAttestation(idKey, attestorSigningKey, attributeName,
 	)
 
 	// Generate a signature from this point
-	finalOutput, _, err := aip.SignOpReturnData(attestorSigningKey, aip.BitcoinECDSA, data)
+	finalOutput, _, _, err := aip.SignOpReturnData(attestorSigningKey, aip.BitcoinECDSA, data)
 	if err != nil {
 		return nil, err
 	}
@@ -98,14 +112,9 @@ func CreateAttestation(idKey, attestorSigningKey, attributeName,
 	return returnTx(finalOutput), nil
 }
 
-// returnTx will add the output and return a tx
+// returnTx will add the output and return a new tx
 func returnTx(out *output.Output) (t *transaction.Transaction) {
-
-	// Create a transaction
-	// todo: replace with bitcoin.CreateTx()
 	t = transaction.New()
-
-	// Add the output
 	t.AddOutput(out)
 	return
 }
