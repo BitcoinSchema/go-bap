@@ -14,8 +14,7 @@ import (
 	"fmt"
 
 	"github.com/bitcoinschema/go-aip"
-	"github.com/libsv/libsv/transaction"
-	"github.com/libsv/libsv/transaction/output"
+	"github.com/libsv/go-bt"
 )
 
 // Prefix is the bitcom prefix for Bitcoin Attestation Protocol (BAP)
@@ -35,7 +34,7 @@ const (
 // CreateIdentity creates an identity from a private key, an id key, and a counter
 //
 // Source: https://github.com/icellan/bap
-func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transaction.Transaction, error) {
+func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*bt.Tx, error) {
 
 	// Test for id key
 	if len(idKey) == 0 {
@@ -60,7 +59,7 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 	)
 
 	// Generate a signature from this point
-	var finalOutput *output.Output
+	var finalOutput *bt.Output
 	if finalOutput, _, _, err = aip.SignOpReturnData(newSigningPrivateKey, aip.BitcoinECDSA, data); err != nil {
 		return nil, err
 	}
@@ -73,7 +72,7 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 //
 // Source: https://github.com/icellan/bap
 func CreateAttestation(idKey, attestorSigningKey, attributeName,
-	attributeValue, identityAttributeSecret string) (*transaction.Transaction, error) {
+	attributeValue, identityAttributeSecret string) (*bt.Tx, error) {
 
 	// ID key is required
 	if len(idKey) == 0 {
@@ -113,8 +112,8 @@ func CreateAttestation(idKey, attestorSigningKey, attributeName,
 }
 
 // returnTx will add the output and return a new tx
-func returnTx(out *output.Output) (t *transaction.Transaction) {
-	t = transaction.New()
+func returnTx(out *bt.Output) (t *bt.Tx) {
+	t = bt.NewTx()
 	t.AddOutput(out)
 	return
 }

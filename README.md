@@ -51,7 +51,7 @@ View the generated [documentation](https://pkg.go.dev/github.com/bitcoinschema/g
 - [bitcoinschema/go-bitcoin](https://github.com/bitcoinschema/go-bitcoin)
 - [bitcoinschema/go-bob](https://github.com/bitcoinschema/go-bob)
 - [bitcoinsv/bsvutil](https://github.com/bitcoinsv/bsvutil)
-- [libsv/libsv](https://github.com/libsv/libsv)
+- [libsv/go-bt](https://github.com/libsv/go-bt)
 </details>
 
 <details>
