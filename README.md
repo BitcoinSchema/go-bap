@@ -6,6 +6,8 @@
 [![Report](https://goreportcard.com/badge/github.com/BitcoinSchema/go-bap?style=flat&v=3)](https://goreportcard.com/report/github.com/BitcoinSchema/go-bap)
 [![codecov](https://codecov.io/gh/BitcoinSchema/go-bap/branch/master/graph/badge.svg?v=3)](https://codecov.io/gh/BitcoinSchema/go-bap)
 [![Go](https://img.shields.io/github/go-mod/go-version/BitcoinSchema/go-bap?v=3)](https://golang.org/)
+<br>
+[![Mergify Status](https://img.shields.io/endpoint.svg?url=https://gh.mergify.io/badges/BitcoinSchema/go-bap&style=flat&v=3)](https://mergify.io)
 [![Sponsor](https://img.shields.io/badge/sponsor-BitcoinSchema-181717.svg?logo=github&style=flat&v=3)](https://github.com/sponsors/BitcoinSchema)
 [![Donate](https://img.shields.io/badge/donate-bitcoin-ff9900.svg?logo=bitcoin&style=flat&v=3)](https://gobitcoinsv.com/#sponsor?utm_source=github&utm_medium=sponsor-link&utm_campaign=go-bap&utm_term=go-bap&utm_content=go-bap)
 
