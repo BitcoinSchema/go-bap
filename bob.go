@@ -65,7 +65,7 @@ func NewFromTapes(tapes []bpu.Tape) (*Bap, error) {
 func NewFromTape(tape *bpu.Tape) (b *Bap, err error) {
 	b = new(Bap)
 	if tape == nil {
-		err = fmt.Errorf("tape is nil %x", err)
+		err = fmt.Errorf("tape is nil %x", tape)
 		return
 	}
 	err = b.FromTape(tape)
