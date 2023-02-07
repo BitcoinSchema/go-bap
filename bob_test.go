@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/bitcoinschema/go-bob"
+	"github.com/bitcoinschema/go-bpu"
 )
 
 // TestFromTape will test the method NewFromTape()
@@ -32,23 +33,27 @@ func TestNewFromTape(t *testing.T) {
 	}
 
 	// Revoke
-	bobData.Out[0].Tape[1].Cell[1].S = string(REVOKE)
+	revoke := string(REVOKE)
+	bobData.Out[0].Tape[1].Cell[1].S = &revoke
 	_, err = NewFromTape(&bobData.Out[0].Tape[1])
 	if err != nil {
 		t.Fatalf("error occurred: %s", err.Error())
 	}
-
+	empty := ""
 	// Bad Sequence
-	bobData.Out[0].Tape[1].Cell[3].S = ""
+	bobData.Out[0].Tape[1].Cell[3].S = &empty
 	_, err = NewFromTape(&bobData.Out[0].Tape[1])
 	if err == nil {
 		t.Fatalf("error should have occurred")
 	}
 
+	id := string(ID)
+	idKey := "idKey"
+	address := "Address"
 	// ID tape
-	bobData.Out[0].Tape[1].Cell[1].S = string(ID)
-	bobData.Out[0].Tape[1].Cell[2].S = "idKey"
-	bobData.Out[0].Tape[1].Cell[3].S = "Address"
+	bobData.Out[0].Tape[1].Cell[1].S = &id
+	bobData.Out[0].Tape[1].Cell[2].S = &idKey
+	bobData.Out[0].Tape[1].Cell[3].S = &address
 	_, err = NewFromTape(&bobData.Out[0].Tape[1])
 	if err != nil {
 		t.Fatalf("error occurred: %s", err.Error())
@@ -88,12 +93,6 @@ func BenchmarkNewFromTape(b *testing.B) {
 func TestNewFromTapePanic(t *testing.T) {
 	t.Parallel()
 
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("the code did not panic")
-		}
-	}()
-
 	_, err := NewFromTape(nil)
 	if err == nil {
 		t.Fatalf("error expected")
@@ -117,7 +116,7 @@ func TestNewFromTapes(t *testing.T) {
 	var (
 		// Testing private methods
 		tests = []struct {
-			inputTapes       []bob.Tape
+			inputTapes       []bpu.Tape
 			expectedType     AttestationType
 			expectedSequence uint64
 			expectedURNHash  string
