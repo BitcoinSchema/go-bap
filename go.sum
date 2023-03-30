@@ -6,12 +6,11 @@ github.com/bitcoinschema/go-bitcoin/v2 v2.0.2/go.mod h1:W27VU8elCcugGuA1pvhMQ4Pj
 github.com/bitcoinschema/go-bitcoin/v2 v2.0.3 h1:3pxGpFk7L2GcAx6VYW6kgcOmI0jhnZ/2zKSsfxqhvfM=
 github.com/bitcoinschema/go-bitcoin/v2 v2.0.3/go.mod h1:MnikSx/hRXOS7dG3RlJOP2cV2lG6IOmoGd6HhvCB7Gc=
 github.com/bitcoinschema/go-bob v0.3.2/go.mod h1:ENT+iU50YGrJ8Swi/Wi7/XlBrqUYamM/Ldx3YLYQQ0E=
-github.com/bitcoinschema/go-bob v0.3.4 h1:cZu55xfKaYwh18nWObXROBnQWaY5bWXGTUnT7yPspWo=
-github.com/bitcoinschema/go-bob v0.3.4/go.mod h1:/wrchZo1fbo1Hxsknue2+ihq8nF8B3EaxSdbrGx+Ft0=
+github.com/bitcoinschema/go-bob v0.3.6 h1:fcAVWZob5NKTpZxcuKBsRVhr1d6J3dD0A5nPFVMBiVk=
+github.com/bitcoinschema/go-bob v0.3.6/go.mod h1:jEImCRBh7+NVhczjXPaAsX/k/DHFG09a9h+zVlY9570=
 github.com/bitcoinschema/go-bpu v0.0.3/go.mod h1:i41D9NP5KIk/oCt8XrRhN27YerZCUG6vjScXDhNn5Us=
-github.com/bitcoinschema/go-bpu v0.0.6/go.mod h1:i41D9NP5KIk/oCt8XrRhN27YerZCUG6vjScXDhNn5Us=
-github.com/bitcoinschema/go-bpu v0.0.7 h1:JS0FX2RrrHZkHdcYXbr56S8Uhj+0rWvC1P6o9e4DIgM=
-github.com/bitcoinschema/go-bpu v0.0.7/go.mod h1:i41D9NP5KIk/oCt8XrRhN27YerZCUG6vjScXDhNn5Us=
+github.com/bitcoinschema/go-bpu v0.0.8 h1:oDbd3IUP3XxoEZSTfL4GXS8jF5qR6EwX6buLYb8vi50=
+github.com/bitcoinschema/go-bpu v0.0.8/go.mod h1:9drcVXECm6hDho97YnygXZtGkmJbv2+lZCo6IoZcF3g=
 github.com/bitcoinsv/bsvd v0.0.0-20190609155523-4c29707f7173 h1:2yTIV9u7H0BhRDGXH5xrAwAz7XibWJtX2dNezMeNsUo=
 github.com/bitcoinsv/bsvd v0.0.0-20190609155523-4c29707f7173/go.mod h1:BZ1UcC9+tmcDEcdVXgpt13hMczwJxWzpAn68wNs7zRA=
 github.com/bitcoinsv/bsvlog v0.0.0-20181216181007-cb81b076bf2e h1:6f+gRvaPE/4h0g39dqTNPr9/P4mikw0aB+dhiExaWN8=
@@ -32,8 +31,9 @@ github.com/libsv/go-bk v0.1.6/go.mod h1:khJboDoH18FPUaZlzRFKzlVN84d4YfdmlDtdX4LA
 github.com/libsv/go-bt v1.0.4/go.mod h1:AfXoLFYEbY/TvCq/84xTce2xGjPUuC5imokHmcykF2k=
 github.com/libsv/go-bt v1.0.8 h1:nWLLcnUm0dxNO3exqrL5jvAcTGkl0dsnBuQqB6+M6vQ=
 github.com/libsv/go-bt v1.0.8/go.mod h1:yO023bNYLh5DwcOYl+ZqLAeTemoy6K+2UbQlIBMv+EQ=
-github.com/libsv/go-bt/v2 v2.1.1 h1:mhE1re2uEOCPTm9vKVtvTcmc2htVFrw2Qna3k9jdbGg=
 github.com/libsv/go-bt/v2 v2.1.1/go.mod h1:mdzxtlFZ3Ht8gVCyMJOEza6+xMmpiAfF6Whv8+PDqNI=
+github.com/libsv/go-bt/v2 v2.2.0 h1:iP9ytmA8If9DHIJZo353P4lmBY4aESOV+taNlhrhCeE=
+github.com/libsv/go-bt/v2 v2.2.0/go.mod h1:CaLwbbbZZsV/Enaaqd4mCGUIGTlNgVbQtK6fnSYpeh4=
 github.com/pkg/diff v0.0.0-20210226163009-20ebb0f2a09e/go.mod h1:pJLUxLENpZxwdsKMEsNbx1VGcRFpLqf3715MtcvvzbA=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
