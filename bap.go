@@ -114,6 +114,9 @@ func CreateAttestation(idKey, attestorSigningKey, attributeName,
 // returnTx will add the output and return a new tx
 func returnTx(outBytes [][]byte) (t *bt.Tx) {
 	t = bt.NewTx()
-	t.AddOpReturnPartsOutput(outBytes)
+	err := t.AddOpReturnPartsOutput(outBytes)
+	if err != nil {
+		return nil
+	}
 	return
 }
