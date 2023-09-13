@@ -65,7 +65,7 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*bt.Tx, er
 	}
 
 	// Return the transaction
-	return returnTx(finalOutput), nil
+	return returnTx(finalOutput)
 }
 
 // CreateAttestation creates an attestation transaction from an id key, signing key, and signing address
@@ -108,15 +108,12 @@ func CreateAttestation(idKey, attestorSigningKey, attributeName,
 	}
 
 	// Return the transaction
-	return returnTx(finalOutput), nil
+	return returnTx(finalOutput)
 }
 
 // returnTx will add the output and return a new tx
-func returnTx(outBytes [][]byte) (t *bt.Tx) {
+func returnTx(outBytes [][]byte) (t *bt.Tx, err error) {
 	t = bt.NewTx()
-	err := t.AddOpReturnPartsOutput(outBytes)
-	if err != nil {
-		return nil
-	}
+	err = t.AddOpReturnPartsOutput(outBytes)
 	return
 }
