@@ -15,5 +15,5 @@ func main() {
 		log.Fatalf("failed to create identity: %s", err.Error())
 	}
 
-	log.Printf("tx created: %s", tx.ToString())
+	log.Printf("tx created: %s", tx.String())
 }

@@ -25,5 +25,5 @@ func main() {
 		log.Fatalf("failed to create attestation: %s", err.Error())
 	}
 
-	log.Printf("attestation tx created: %s", tx.ToString())
+	log.Printf("attestation tx created: %s", tx.String())
 }

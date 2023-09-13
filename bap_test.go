@@ -85,8 +85,8 @@ func TestCreateIdentity(t *testing.T) {
 			t.Errorf("%s Failed: [%s] [%s] [%d] inputted and nil was not expected", t.Name(), test.inputPrivateKey, test.inputIDKey, test.inputCounter)
 		} else if tx != nil && test.expectedNil {
 			t.Errorf("%s Failed: [%s] [%s] [%d] inputted and nil was expected", t.Name(), test.inputPrivateKey, test.inputIDKey, test.inputCounter)
-		} else if tx != nil && tx.GetTxID() != test.expectedTxID {
-			t.Errorf("%s Failed: [%s] [%s] [%d] inputted and expected [%s] but got [%s]", t.Name(), test.inputPrivateKey, test.inputIDKey, test.inputCounter, test.expectedTxID, tx.GetTxID())
+		} else if tx != nil && tx.TxID() != test.expectedTxID {
+			t.Errorf("%s Failed: [%s] [%s] [%d] inputted and expected [%s] but got [%s]", t.Name(), test.inputPrivateKey, test.inputIDKey, test.inputCounter, test.expectedTxID, tx.TxID())
 		}
 	}
 }
@@ -99,7 +99,7 @@ func ExampleCreateIdentity() {
 		return
 	}
 
-	fmt.Printf("tx generated: %s", tx.GetTxID())
+	fmt.Printf("tx generated: %s", tx.TxID())
 	// Output:tx generated: d2384b0946b8c3137bc0bf12d122efb8b77be998118b65c21448864234188f20
 }
 
@@ -220,9 +220,9 @@ func TestCreateAttestation(t *testing.T) {
 		} else if tx != nil && test.expectedNil {
 			t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and nil was expected", t.Name(), test.inputIDKey, test.inputSigningKey,
 				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret)
-		} else if tx != nil && tx.GetTxID() != test.expectedTxID {
+		} else if tx != nil && tx.TxID() != test.expectedTxID {
 			t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and expected [%s] but got [%s]", t.Name(), test.inputIDKey, test.inputSigningKey,
-				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret, test.expectedTxID, tx.GetTxID())
+				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret, test.expectedTxID, tx.TxID())
 		}
 	}
 }
@@ -241,7 +241,7 @@ func ExampleCreateAttestation() {
 		return
 	}
 
-	fmt.Printf("tx generated: %s", tx.GetTxID())
+	fmt.Printf("tx generated: %s", tx.TxID())
 	// Output:tx generated: 3cd2baf76b7fc8324a117119daf77c0f428e5defb686be9b7631daaa036d5a61
 }
 

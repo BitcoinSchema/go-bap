@@ -14,7 +14,7 @@ import (
 	"fmt"
 
 	"github.com/bitcoinschema/go-aip"
-	"github.com/libsv/go-bt"
+	"github.com/libsv/go-bt/v2"
 )
 
 // Prefix is the bitcom prefix for Bitcoin Attestation Protocol (BAP)
@@ -59,8 +59,8 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*bt.Tx, er
 	)
 
 	// Generate a signature from this point
-	var finalOutput *bt.Output
-	if finalOutput, _, _, err = aip.SignOpReturnData(newSigningPrivateKey, aip.BitcoinECDSA, data); err != nil {
+	var finalOutput [][]byte
+	if finalOutput, _, err = aip.SignOpReturnData(newSigningPrivateKey, aip.BitcoinECDSA, data); err != nil {
 		return nil, err
 	}
 
@@ -102,7 +102,7 @@ func CreateAttestation(idKey, attestorSigningKey, attributeName,
 	)
 
 	// Generate a signature from this point
-	finalOutput, _, _, err := aip.SignOpReturnData(attestorSigningKey, aip.BitcoinECDSA, data)
+	finalOutput, _, err := aip.SignOpReturnData(attestorSigningKey, aip.BitcoinECDSA, data)
 	if err != nil {
 		return nil, err
 	}
@@ -112,8 +112,8 @@ func CreateAttestation(idKey, attestorSigningKey, attributeName,
 }
 
 // returnTx will add the output and return a new tx
-func returnTx(out *bt.Output) (t *bt.Tx) {
+func returnTx(outBytes [][]byte) (t *bt.Tx) {
 	t = bt.NewTx()
-	t.AddOutput(out)
+	t.AddOpReturnPartsOutput(outBytes)
 	return
 }
