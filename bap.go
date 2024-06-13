@@ -29,6 +29,7 @@ const (
 	ATTEST AttestationType = "ATTEST"
 	ID     AttestationType = "ID"
 	REVOKE AttestationType = "REVOKE"
+	ALIAS  AttestationType = "ALIAS"
 )
 
 // CreateIdentity creates an identity from a private key, an id key, and a counter

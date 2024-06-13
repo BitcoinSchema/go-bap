@@ -15,6 +15,7 @@ type Bap struct {
 	Sequence uint64          `json:"sequence" bson:"sequence"`
 	Type     AttestationType `json:"type,omitempty" bson:"type,omitempty"`
 	URNHash  string          `json:"urn_hash,omitempty" bson:"urn_hash,omitempty"`
+	Profile  string          `json:"profile,omitempty" bson:"profile,omitempty"`
 }
 
 // FromTape takes a bob.Tape and returns a BAP data structure
@@ -44,6 +45,9 @@ func (b *Bap) FromTape(tape *bpu.Tape) (err error) {
 	case ID:
 		b.Address = *tape.Cell[3].S
 		b.IDKey = *tape.Cell[2].S
+	case ALIAS:
+		b.IDKey = *tape.Cell[2].S
+		b.Profile = *tape.Cell[3].S
 	}
 	return
 }
