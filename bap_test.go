@@ -85,7 +85,7 @@ func TestCreateIdentity(t *testing.T) {
 			t.Errorf("%s Failed: [%s] [%s] [%d] inputted and nil was not expected", t.Name(), test.inputPrivateKey, test.inputIDKey, test.inputCounter)
 		} else if tx != nil && test.expectedNil {
 			t.Errorf("%s Failed: [%s] [%s] [%d] inputted and nil was expected", t.Name(), test.inputPrivateKey, test.inputIDKey, test.inputCounter)
-		} else if tx != nil && tx.TxID() != test.expectedTxID {
+		} else if tx != nil && tx.TxID().String() != test.expectedTxID {
 			t.Errorf("%s Failed: [%s] [%s] [%d] inputted and expected [%s] but got [%s]", t.Name(), test.inputPrivateKey, test.inputIDKey, test.inputCounter, test.expectedTxID, tx.TxID())
 		}
 	}
@@ -220,7 +220,7 @@ func TestCreateAttestation(t *testing.T) {
 		} else if tx != nil && test.expectedNil {
 			t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and nil was expected", t.Name(), test.inputIDKey, test.inputSigningKey,
 				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret)
-		} else if tx != nil && tx.TxID() != test.expectedTxID {
+		} else if tx != nil && tx.TxID().String() != test.expectedTxID {
 			t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and expected [%s] but got [%s]", t.Name(), test.inputIDKey, test.inputSigningKey,
 				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret, test.expectedTxID, tx.TxID())
 		}

@@ -13,8 +13,8 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/bitcoin-sv/go-sdk/transaction"
 	"github.com/bitcoinschema/go-aip"
-	"github.com/libsv/go-bt/v2"
 )
 
 // Prefix is the bitcom prefix for Bitcoin Attestation Protocol (BAP)
@@ -35,7 +35,7 @@ const (
 // CreateIdentity creates an identity from a private key, an id key, and a counter
 //
 // Source: https://github.com/icellan/bap
-func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*bt.Tx, error) {
+func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transaction.Transaction, error) {
 
 	// Test for id key
 	if len(idKey) == 0 {
@@ -73,7 +73,7 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*bt.Tx, er
 //
 // Source: https://github.com/icellan/bap
 func CreateAttestation(idKey, attestorSigningKey, attributeName,
-	attributeValue, identityAttributeSecret string) (*bt.Tx, error) {
+	attributeValue, identityAttributeSecret string) (*transaction.Transaction, error) {
 
 	// ID key is required
 	if len(idKey) == 0 {
@@ -113,8 +113,8 @@ func CreateAttestation(idKey, attestorSigningKey, attributeName,
 }
 
 // returnTx will add the output and return a new tx
-func returnTx(outBytes [][]byte) (t *bt.Tx, err error) {
-	t = bt.NewTx()
+func returnTx(outBytes [][]byte) (t *transaction.Transaction, err error) {
+	t = transaction.NewTransaction()
 	err = t.AddOpReturnPartsOutput(outBytes)
 	return
 }
