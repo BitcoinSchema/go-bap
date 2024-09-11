@@ -13,7 +13,10 @@ import (
 	"errors"
 	"fmt"
 
+	hd "github.com/bitcoin-sv/go-sdk/compat/bip32"
+	ec "github.com/bitcoin-sv/go-sdk/primitives/ec"
 	"github.com/bitcoin-sv/go-sdk/transaction"
+	chaincfg "github.com/bitcoin-sv/go-sdk/transaction/chaincfg"
 	"github.com/bitcoinschema/go-aip"
 )
 
@@ -35,18 +38,22 @@ const (
 // CreateIdentity creates an identity from a private key, an id key, and a counter
 //
 // Source: https://github.com/icellan/bap
-func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transaction.Transaction, error) {
+func CreateIdentity(xPrivateKey, idKey string, currentCounter uint32) (*transaction.Transaction, error) {
 
 	// Test for id key
 	if len(idKey) == 0 {
 		return nil, fmt.Errorf("missing required field: %s", "idKey")
 	}
 
-	// Derive the keys
-	newSigningPrivateKey, newAddress, err := deriveKeys(privateKey, currentCounter+1) // Increment the next key
+	hdKey, err := hd.NewKeyFromString(xPrivateKey)
 	if err != nil {
 		return nil, err
 	}
+	signingHdKey, err := hdKey.DeriveChildFromPath(fmt.Sprintf("%d/%d", 0, currentCounter))
+	if err != nil {
+		return nil, err
+	}
+	signingKey, err := signingHdKey.ECPrivKey()
 
 	// Create the identity attestation op_return data
 	var data [][]byte
@@ -55,13 +62,13 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 		[]byte(Prefix),
 		[]byte(ID),
 		[]byte(idKey),
-		[]byte(newAddress),
+		[]byte(signingHdKey.Address(&chaincfg.MainNet)),
 		[]byte(pipe),
 	)
 
 	// Generate a signature from this point
 	var finalOutput [][]byte
-	if finalOutput, _, err = aip.SignOpReturnData(newSigningPrivateKey, aip.BitcoinECDSA, data); err != nil {
+	if finalOutput, _, err = aip.SignOpReturnData(signingKey, aip.BitcoinECDSA, data); err != nil {
 		return nil, err
 	}
 
@@ -72,7 +79,7 @@ func CreateIdentity(privateKey, idKey string, currentCounter uint32) (*transacti
 // CreateAttestation creates an attestation transaction from an id key, signing key, and signing address
 //
 // Source: https://github.com/icellan/bap
-func CreateAttestation(idKey, attestorSigningKey, attributeName,
+func CreateAttestation(idKey string, attestorSigningKey *ec.PrivateKey, attributeName,
 	attributeValue, identityAttributeSecret string) (*transaction.Transaction, error) {
 
 	// ID key is required

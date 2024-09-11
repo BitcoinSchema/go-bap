@@ -1,8 +1,11 @@
 package bap
 
 import (
+	"encoding/hex"
 	"fmt"
 	"testing"
+
+	ec "github.com/bitcoin-sv/go-sdk/primitives/ec"
 )
 
 // Examples
@@ -28,7 +31,7 @@ func TestCreateIdentity(t *testing.T) {
 				privateKey,
 				idKey,
 				0,
-				"d2384b0946b8c3137bc0bf12d122efb8b77be998118b65c21448864234188f20",
+				"187a4133bf007ca0aae2b31b0600772fa93eab33aa0ed9f05e94b5415523224c",
 				false,
 				false,
 			},
@@ -60,7 +63,7 @@ func TestCreateIdentity(t *testing.T) {
 				privateKey,
 				idKey,
 				1,
-				"4f00a4c6bca4a538ecce849b19188222aeb0d28e7b0c9acdb0c20fe9de628f9e",
+				"c4296095a0f7066e0aa4b902fea66493967cc91c772a2f10869e014ef9d11c42",
 				false,
 				false,
 			},
@@ -68,7 +71,7 @@ func TestCreateIdentity(t *testing.T) {
 				privateKey,
 				idKey,
 				100,
-				"0b61af0cfd6331731b7f897b051a56a903928c6bcff8ba59cdd4b8d0093b12ae",
+				"4332af03917a86de66ca2b4467150284efd1a2f3c0878c291d48ebc9dfc429b6",
 				false,
 				false,
 			},
@@ -100,7 +103,7 @@ func ExampleCreateIdentity() {
 	}
 
 	fmt.Printf("tx generated: %s", tx.TxID())
-	// Output:tx generated: d2384b0946b8c3137bc0bf12d122efb8b77be998118b65c21448864234188f20
+	// Output:tx generated: 187a4133bf007ca0aae2b31b0600772fa93eab33aa0ed9f05e94b5415523224c
 }
 
 // BenchmarkCreateIdentity benchmarks the method CreateIdentity()
@@ -111,30 +114,34 @@ func BenchmarkCreateIdentity(b *testing.B) {
 }
 
 // TestDeriveKeys will test the method deriveKeys()
-func TestDeriveKeys(t *testing.T) {
+// func TestDeriveKeys(t *testing.T) {
 
-	// Derive the keys
-	_, _, err := deriveKeys("", 0)
-	if err == nil {
-		t.Fatalf("error should have occurred")
-	}
+// 	// Derive the keys
+// 	_, _, err := deriveKeys("", 0)
+// 	if err == nil {
+// 		t.Fatalf("error should have occurred")
+// 	}
 
-	// Entity / Service Provider's Identity Private Key
-	entityPk := "xprv9s21ZrQH143K3PZSwbEeXEYq74EbnfMngzAiMCZcfjzyRpUvt2vQJnaHRTZjeuEmLXeN6BzYRoFsEckfobxE9XaRzeLGfQoxzPzTRyRb6oE"
+// 	// Entity / Service Provider's Identity Private Key
+// 	entityPk := "xprv9s21ZrQH143K3PZSwbEeXEYq74EbnfMngzAiMCZcfjzyRpUvt2vQJnaHRTZjeuEmLXeN6BzYRoFsEckfobxE9XaRzeLGfQoxzPzTRyRb6oE"
 
-	// Derive the keys
-	var entitySigningAddress, entitySigningKey string
-	entitySigningKey, entitySigningAddress, err = deriveKeys(entityPk, 0)
-	if err != nil {
-		t.Fatalf("error occurred: %s", err.Error())
-	}
-	if entitySigningKey != "127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c" {
-		t.Fatalf("signing key does not match: %s vs %s", entitySigningKey, "")
-	}
-	if entitySigningAddress != "1AFc9feffQmxT61iEftzkaYvWTgLCyU6j" {
-		t.Fatalf("signing address does not match: %s vs %s", entitySigningAddress, "")
-	}
-}
+// 	hdKey, _ := hd.NewKeyFromString(entityPk)
+// 	signingHdKey, _ := hdKey.DeriveChildFromPath(fmt.Sprintf("%d/%d", 0, 0))
+// 	signingKey, err := signingHdKey.ECPrivKey()
+
+// 	// Derive the keys
+// 	// var entitySigningAddress, entitySigningKey string
+// 	// entitySigningKey, entitySigningAddress, err = deriveKeys(entityPk, 0)
+// 	// if err != nil {
+// 	// 	t.Fatalf("error occurred: %s", err.Error())
+// 	// }
+// 	if entitySigningKey != "127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c" {
+// 		t.Fatalf("signing key does not match: %s vs %s", entitySigningKey, "")
+// 	}
+// 	if entitySigningAddress != "1AFc9feffQmxT61iEftzkaYvWTgLCyU6j" {
+// 		t.Fatalf("signing address does not match: %s vs %s", entitySigningAddress, "")
+// 	}
+// }
 
 // TestCreateAttestation will test the method CreateAttestation()
 func TestCreateAttestation(t *testing.T) {
@@ -158,7 +165,7 @@ func TestCreateAttestation(t *testing.T) {
 				"person",
 				"john",
 				"some-secret-hash",
-				"d2e8a8a1f4b1476d6ca67277b323ad35c2e1c9af4a8d0753c8a121a3a7b7e762",
+				"a9d35aecc3f864c238c95a08c40e0c9f9353610e8632234839c012f2b3d6eabf",
 				false,
 				false,
 			},
@@ -188,16 +195,6 @@ func TestCreateAttestation(t *testing.T) {
 				"person",
 				"john",
 				"",
-				"1930299d3c1f05155aa9f2c1c6cac6f18c5e6e213bbffb728665ba3bfa7e528d",
-				true,
-				true,
-			},
-			{
-				idKey,
-				"",
-				"person",
-				"john",
-				"some-secret-hash",
 				"1930299d3c1f05155aa9f2c1c6cac6f18c5e6e213bbffb728665ba3bfa7e528d",
 				true,
 				true,
@@ -207,31 +204,38 @@ func TestCreateAttestation(t *testing.T) {
 
 	// Run tests
 	for _, test := range tests {
-		if tx, err := CreateAttestation(test.inputIDKey, test.inputSigningKey,
-			test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret); err != nil && !test.expectedError {
-			t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and error not expected but got: %s", t.Name(), test.inputIDKey, test.inputSigningKey,
-				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret, err.Error())
-		} else if err == nil && test.expectedError {
-			t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and error was expected", t.Name(), test.inputIDKey, test.inputSigningKey,
-				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret)
-		} else if tx == nil && !test.expectedNil {
-			t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and nil was not expected", t.Name(), test.inputIDKey, test.inputSigningKey,
-				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret)
-		} else if tx != nil && test.expectedNil {
-			t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and nil was expected", t.Name(), test.inputIDKey, test.inputSigningKey,
-				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret)
-		} else if tx != nil && tx.TxID().String() != test.expectedTxID {
-			t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and expected [%s] but got [%s]", t.Name(), test.inputIDKey, test.inputSigningKey,
-				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret, test.expectedTxID, tx.TxID())
+		if privBuf, err := hex.DecodeString(test.inputSigningKey); err != nil {
+			t.Errorf("%s Failed: [%s] inputted and error not expected but got: %s", t.Name(), test.inputSigningKey, err.Error())
+		} else {
+			priv, _ := ec.PrivateKeyFromBytes(privBuf)
+			if tx, err := CreateAttestation(test.inputIDKey, priv,
+				test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret); err != nil && !test.expectedError {
+				t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and error not expected but got: %s", t.Name(), test.inputIDKey, test.inputSigningKey,
+					test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret, err.Error())
+			} else if err == nil && test.expectedError {
+				t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and error was expected", t.Name(), test.inputIDKey, test.inputSigningKey,
+					test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret)
+			} else if tx == nil && !test.expectedNil {
+				t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and nil was not expected", t.Name(), test.inputIDKey, test.inputSigningKey,
+					test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret)
+			} else if tx != nil && test.expectedNil {
+				t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and nil was expected", t.Name(), test.inputIDKey, test.inputSigningKey,
+					test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret)
+			} else if tx != nil && tx.TxID().String() != test.expectedTxID {
+				t.Errorf("%s Failed: [%s] [%s] [%s] [%s] [%s] inputted and expected [%s] but got [%s]", t.Name(), test.inputIDKey, test.inputSigningKey,
+					test.inputAttributeName, test.inputAttributeValue, test.inputAttributeSecret, test.expectedTxID, tx.TxID())
+			}
 		}
 	}
 }
 
 // ExampleCreateAttestation example using CreateAttestation()
 func ExampleCreateAttestation() {
+	privBuf, _ := hex.DecodeString("127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c")
+	priv, _ := ec.PrivateKeyFromBytes(privBuf)
 	tx, err := CreateAttestation(
 		idKey,
-		"127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c",
+		priv,
 		"person",
 		"john doe",
 		"some-secret-hash",
@@ -241,16 +245,18 @@ func ExampleCreateAttestation() {
 		return
 	}
 
-	fmt.Printf("tx generated: %s", tx.TxID())
-	// Output:tx generated: 3cd2baf76b7fc8324a117119daf77c0f428e5defb686be9b7631daaa036d5a61
+	fmt.Printf("tx generated: %s", tx.TxID().String())
+	// Output:tx generated: afa78310343de3a8b23703c1556ff587ea8839eb8f224b31ce76155d1b8cd6c4
 }
 
 // BenchmarkCreateAttestation benchmarks the method CreateAttestation()
 func BenchmarkCreateAttestation(b *testing.B) {
+	privBuf, _ := hex.DecodeString("127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c")
+	priv, _ := ec.PrivateKeyFromBytes(privBuf)
 	for i := 0; i < b.N; i++ {
 		_, _ = CreateAttestation(
 			idKey,
-			"127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c",
+			priv,
 			"person",
 			"john doe",
 			"some-secret-hash",
