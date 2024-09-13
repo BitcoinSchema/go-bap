@@ -54,6 +54,9 @@ func CreateIdentity(xPrivateKey, idKey string, currentCounter uint32) (*transact
 		return nil, err
 	}
 	signingKey, err := signingHdKey.ECPrivKey()
+	if err != nil {
+		return nil, err
+	}
 
 	// Create the identity attestation op_return data
 	var data [][]byte
