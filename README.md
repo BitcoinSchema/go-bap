@@ -14,15 +14,20 @@
 <br/>
 
 ## Table of Contents
-- [Installation](#installation)
-- [Documentation](#documentation)
-- [Examples & Tests](#examples--tests)
-- [Benchmarks](#benchmarks)
-- [Code Standards](#code-standards)
-- [Usage](#usage)
-- [Maintainers](#maintainers)
-- [Contributing](#contributing)
-- [License](#license)
+- [go-bap](#go-bap)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Documentation](#documentation)
+    - [Features](#features)
+  - [Examples \& Tests](#examples--tests)
+  - [Benchmarks](#benchmarks)
+  - [Code Standards](#code-standards)
+  - [Usage](#usage)
+  - [Maintainers](#maintainers)
+  - [Contributing](#contributing)
+    - [How can I help?](#how-can-i-help)
+    - [Credits](#credits)
+  - [License](#license)
 
 <br/>
 
@@ -50,10 +55,9 @@ View the generated [documentation](https://pkg.go.dev/github.com/bitcoinschema/g
 <br/>
 
 - [bitcoinschema/go-aip](https://github.com/bitcoinschema/go-aip)
-- [bitcoinschema/go-bitcoin](https://github.com/bitcoinschema/go-bitcoin)
 - [bitcoinschema/go-bob](https://github.com/bitcoinschema/go-bob)
 - [bitcoinsv/bsvutil](https://github.com/bitcoinsv/bsvutil)
-- [libsv/go-bt](https://github.com/libsv/go-bt)
+- [bitcoin-sv/go-sdk](https://github.com/bitcoin-sv/go-sdk)
 </details>
 
 <details>
@@ -115,7 +119,7 @@ vet                   Run the Go vet application
 
 ## Examples & Tests
 All unit tests and [examples](examples) run via [GitHub Actions](https://github.com/BitcoinSchema/go-bap/actions) and
-uses [Go version 1.18.x](https://golang.org/doc/go1.18). View the [configuration file](.github/workflows/run-tests.yml).
+uses [Go version 1.23.x](https://golang.org/doc/go1.23). View the [configuration file](.github/workflows/run-tests.yml).
 
 Run all tests (including integration tests)
 ```shell script

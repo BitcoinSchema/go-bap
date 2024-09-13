@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/hex"
 	"log"
 
+	ec "github.com/bitcoin-sv/go-sdk/primitives/ec"
 	"github.com/bitcoinschema/go-bap"
 )
 
@@ -14,9 +16,12 @@ func main() {
 	exampleAttributeValue := "John Adams"
 	exampleIdentityAttributeSecret := "e2c6fb4063cc04af58935737eaffc938011dff546d47b7fbb18ed346f8c4d4fa"
 
+	privBuf, _ := hex.DecodeString("127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c")
+	priv, _ := ec.PrivateKeyFromBytes(privBuf)
+
 	tx, err := bap.CreateAttestation(
 		exampleIdKey,
-		"127d0ab318252b4622d8eac61407359a4cab7c1a5d67754b5bf9db910eaf052c",
+		priv,
 		exampleAttributeName,
 		exampleAttributeValue,
 		exampleIdentityAttributeSecret,
