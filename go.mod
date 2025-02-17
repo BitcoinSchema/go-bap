@@ -4,7 +4,7 @@ go 1.23.1
 
 require (
 	github.com/bitcoin-sv/go-sdk v1.1.18
-	github.com/bitcoinschema/go-aip v0.3.1
+	github.com/bitcoinschema/go-aip v0.3.2
 	github.com/bitcoinschema/go-bob v0.5.1
 	github.com/bitcoinschema/go-bpu v0.2.1
 )
