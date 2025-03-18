@@ -13,10 +13,10 @@ import (
 	"errors"
 	"fmt"
 
-	hd "github.com/bitcoin-sv/go-sdk/compat/bip32"
-	ec "github.com/bitcoin-sv/go-sdk/primitives/ec"
-	"github.com/bitcoin-sv/go-sdk/transaction"
-	chaincfg "github.com/bitcoin-sv/go-sdk/transaction/chaincfg"
+	hd "github.com/bsv-blockchain/go-sdk/compat/bip32"
+	ec "github.com/bsv-blockchain/go-sdk/primitives/ec"
+	"github.com/bsv-blockchain/go-sdk/transaction"
+	chaincfg "github.com/bsv-blockchain/go-sdk/transaction/chaincfg"
 	"github.com/bitcoinschema/go-aip"
 )
 
