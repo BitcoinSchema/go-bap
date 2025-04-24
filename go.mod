@@ -6,7 +6,7 @@ require (
 	github.com/bitcoinschema/go-aip v0.3.3
 	github.com/bitcoinschema/go-bob v0.5.2
 	github.com/bitcoinschema/go-bpu v0.2.2
-	github.com/bsv-blockchain/go-sdk v1.1.22
+	github.com/bsv-blockchain/go-sdk v1.1.23
 )
 
 require (
