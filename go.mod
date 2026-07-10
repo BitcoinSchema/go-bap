@@ -1,6 +1,6 @@
 module github.com/bitcoinschema/go-bap
 
-go 1.24.1
+go 1.25.0
 
 require (
 	github.com/bitcoinschema/go-aip v0.3.3
@@ -11,5 +11,5 @@ require (
 
 require (
 	github.com/pkg/errors v0.9.1 // indirect
-	golang.org/x/crypto v0.35.0 // indirect
+	golang.org/x/crypto v0.52.0 // indirect
 )
